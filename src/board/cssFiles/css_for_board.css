@@ -19,6 +19,11 @@ td {
   height: 18px;
   width: 18px;
 }
+.colorfulBox {
+  height: 18px;
+  width: 18px;
+  background-color: #2ebf91;
+}
 .header_box {
   display: flex;
   height: 100px;

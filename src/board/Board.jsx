@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import "./cssFiles/css_for_board.css";
 
 class Board extends Component {
-  buttonClick = () => {
+  changeColorOfBars = () => {
     //console.log("here", document.getElementById("0"));
-    for (let i = 0; i < 1; i++) {
-      for (let j = 0; j < 1; j++) {
-        console.log("i,j: ", i, j);
-        console.log(document.getElementById(i, j));
+    for (let i = 0; i < rows_count; i++) {
+      for (let j = 0; j < columns_count; j++) {
+        let node = i.toString() + "," + j.toString();
+        //console.log(node);
+        let table_data = document.getElementById(node);
+        table_data.setAttribute("class", "colorfulBox");
       }
     }
   };
@@ -16,7 +18,7 @@ class Board extends Component {
       <div>
         <div className="header_box">
           <p>Path-Finding Visualizer</p>
-          <button className="cta" onClick={() => this.buttonClick()}>
+          <button className="cta" onClick={() => this.changeColorOfBars()}>
             Color-All!
           </button>
         </div>
