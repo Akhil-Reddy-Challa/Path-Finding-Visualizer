@@ -1,0 +1,25 @@
+* {
+  background-color: gray;
+}
+.main-container {
+  margin-left: 5px;
+  margin-top: 100px; /*For banner,logo, button */
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(82, 22.109px);
+  grid-template-rows: repeat(37, 22.216px);
+  gap: 1px;
+}
+.item {
+  border: 1px solid;
+  font-size: 1px;
+  text-align: center;
+}
+.item1 {
+  border: 1px solid;
+  font-size: 12px;
+  background-color: aqua;
+}
