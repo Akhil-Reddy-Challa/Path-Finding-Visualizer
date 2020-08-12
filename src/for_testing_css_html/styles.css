@@ -1,24 +1,12 @@
-* {
-  background-color: gray;
+table {
+  border-collapse: seperate;
+  border-spacing: 2px;
 }
-.main-container {
-  margin-left: 3px;
-  margin-top: 90px; /*For banner,logo, button */
-  margin-right: 1px;
+td {
+  border: 1px solid black;
 }
-.container {
-  display: grid;
-  grid-template-columns: repeat(75, 23.2px);
-  grid-template-rows: repeat(30, 27.3px);
-  gap: 2px;
-}
-.item {
-  border: 1px solid;
-  font-size: 1px;
-  text-align: center;
-}
-.item1 {
-  border: 1px solid;
-  font-size: 12px;
-  background-color: aqua;
+
+.box {
+  height: 22px;
+  width: 22px;
 }
