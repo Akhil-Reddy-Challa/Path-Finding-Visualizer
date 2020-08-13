@@ -9,12 +9,9 @@ class Board extends Component {
     };
   }
   clearAll = () => {
-    //console.log("here", document.getElementById("0"));
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
-        let node = i.toString() + "," + j.toString();
-        //console.log(node);
-        let table_data = document.getElementById(node);
+        let table_data = document.getElementById([i, j]);
         table_data.setAttribute("class", "box");
       }
     }
@@ -41,13 +38,71 @@ class Board extends Component {
       grid_array[node[0]][node[1]] = 1;
     }
   };
+  sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+  //Usage: await this.sleep(timeToPause);
+  traverseBoardFromLeftToRight = async () => {
+    //Clear Board once
+    this.clearAll();
+    var j = 0;
+    for (var i = 0; i < rows_count; i++) {
+      if (i % 2 === 0) {
+        for (j = 0; j < columns_count; j++) {
+          //console.log("color node(i,j)", i, j);
+          let table_data = document.getElementById([i, j]);
+          table_data.setAttribute("class", "colorfulBox");
+          await this.sleep(5);
+        }
+      } else {
+        for (j = columns_count - 1; j >= 0; j--) {
+          //console.log("color node(i,j)", i, j);
+          let table_data = document.getElementById([i, j]);
+          table_data.setAttribute("class", "colorfulBox");
+          await this.sleep(5);
+        }
+      }
+    }
+    //After Coloring, await for 2.5 seconds and clear the Board
+    await this.sleep(2500);
+    this.clearAll();
+  };
+  traverseBoardFromTopToBottom = async () => {
+    //Clear Board once
+    this.clearAll();
+    var j = 0;
+    for (var i = 0; i < columns_count; i++) {
+      if (i % 2 === 0) {
+        for (j = 0; j < rows_count; j++) {
+          //console.log("color node(i,j)", i, j);
+          let table_data = document.getElementById([j, i]);
+          table_data.setAttribute("class", "colorfulBox");
+          await this.sleep(1);
+        }
+      } else {
+        for (j = rows_count - 1; j >= 0; j--) {
+          //console.log("color node(i,j)", i, j);
+          let table_data = document.getElementById([j, i]);
+          table_data.setAttribute("class", "colorfulBox");
+          await this.sleep(1);
+        }
+      }
+    }
+    //After Coloring, await for 2.5 seconds and clear the Board
+    await this.sleep(2500);
+    this.clearAll();
+  };
   render() {
     return (
       <div>
         <div className="header_box">
           <p>Path-Finding Visualizer</p>
-          <button className="cta" onClick={() => this.clearAll()}>
-            Clear-Board!
+          <button onClick={() => this.clearAll()}>Clear-Board!</button>
+          <button onClick={() => this.traverseBoardFromLeftToRight()}>
+            Traverse Board(L->R)!
+          </button>
+          <button onClick={() => this.traverseBoardFromTopToBottom()}>
+            Traverse Board(T->D)!
           </button>
         </div>
         <div className="container">
