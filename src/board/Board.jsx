@@ -8,7 +8,7 @@ class Board extends Component {
       mouseButtonPressed: false,
     };
   }
-  clearAll = () => {
+  clearTheBoard = () => {
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
         let table_data = document.getElementById([i, j]);
@@ -24,7 +24,7 @@ class Board extends Component {
       grid_array[node[0]][node[1]] = 0; //De-color it
       table_data.setAttribute("class", "box");
     } else {
-      table_data.setAttribute("class", "colorfulBox");
+      table_data.setAttribute("class", "colorfulBox animateBox");
       grid_array[node[0]][node[1]] = 1;
     }
   };
@@ -34,70 +34,66 @@ class Board extends Component {
   changeColorOfNode = (node) => {
     if (this.state.mouseButtonPressed) {
       let table_data = document.getElementById(node);
-      table_data.setAttribute("class", "colorfulBox");
+      table_data.setAttribute("class", "colorfulBox animateBox");
       grid_array[node[0]][node[1]] = 1;
     }
   };
-  sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
-  //Usage: await this.sleep(timeToPause);
-  traverseBoardFromLeftToRight = async () => {
+  traverseBoardFromLeftToRight = () => {
     //Clear Board once
-    this.clearAll();
-    var j = 0;
-    for (var i = 0; i < rows_count; i++) {
+    this.clearTheBoard();
+    var timer = 1; //1 millisecond
+    for (let i = 0; i < rows_count; i++) {
       if (i % 2 === 0) {
-        for (j = 0; j < columns_count; j++) {
+        for (let j = 0; j < columns_count; j++) {
           //console.log("color node(i,j)", i, j);
           let table_data = document.getElementById([i, j]);
-          table_data.setAttribute("class", "colorfulBox");
-          await this.sleep(5);
+          setTimeout(function () {
+            table_data.setAttribute("class", "colorfulBox animateBox");
+          }, timer++ * 8);
         }
       } else {
-        for (j = columns_count - 1; j >= 0; j--) {
+        for (let j = columns_count - 1; j >= 0; j--) {
           //console.log("color node(i,j)", i, j);
           let table_data = document.getElementById([i, j]);
-          table_data.setAttribute("class", "colorfulBox");
-          await this.sleep(5);
+          setTimeout(function () {
+            table_data.setAttribute("class", "colorfulBox animateBox");
+          }, timer++ * 8);
         }
       }
     }
-    //After Coloring, await for 2.5 seconds and clear the Board
-    await this.sleep(2500);
-    this.clearAll();
+    this.clearTheBoard();
   };
-  traverseBoardFromTopToBottom = async () => {
+  traverseBoardFromTopToBottom = () => {
     //Clear Board once
-    this.clearAll();
-    var j = 0;
-    for (var i = 0; i < columns_count; i++) {
+    this.clearTheBoard();
+    var timer = 1; //1 millisecond
+    for (let i = 0; i < columns_count; i++) {
       if (i % 2 === 0) {
-        for (j = 0; j < rows_count; j++) {
+        for (let j = 0; j < rows_count; j++) {
           //console.log("color node(i,j)", i, j);
           let table_data = document.getElementById([j, i]);
-          table_data.setAttribute("class", "colorfulBox");
-          await this.sleep(1);
+          setTimeout(function () {
+            table_data.setAttribute("class", "colorfulBox animateBox");
+          }, timer++ * 8);
         }
       } else {
-        for (j = rows_count - 1; j >= 0; j--) {
+        for (let j = rows_count - 1; j >= 0; j--) {
           //console.log("color node(i,j)", i, j);
           let table_data = document.getElementById([j, i]);
-          table_data.setAttribute("class", "colorfulBox");
-          await this.sleep(1);
+          setTimeout(function () {
+            table_data.setAttribute("class", "colorfulBox animateBox");
+          }, timer++ * 8);
         }
       }
     }
-    //After Coloring, await for 2.5 seconds and clear the Board
-    await this.sleep(2500);
-    this.clearAll();
+    this.clearTheBoard();
   };
   render() {
     return (
       <div>
         <div className="header_box">
           <p>Path-Finding Visualizer</p>
-          <button onClick={() => this.clearAll()}>Clear-Board!</button>
+          <button onClick={() => this.clearTheBoard()}>Clear-Board!</button>
           <button onClick={() => this.traverseBoardFromLeftToRight()}>
             Traverse Board(L->R)!
           </button>
@@ -141,7 +137,7 @@ const screen_height = window.innerHeight;
 const new_s_w = screen_width - 20; //Subtract 2px from right & 2px from left
 const new_s_h = screen_height - 120; //Preserve 100px from top for Logo, 2px from bottom
 const grid_array = [];
-const divide_by = 24; //Box occupies 18px+1px(border)+1px(padding)+gap b/w rows,cols
+const divide_by = 26; //Box occupies 18px+1px(border)+1px(padding)+gap b/w rows,cols
 const rows_count = Math.floor(new_s_h / divide_by); //Number of rows
 const columns_count = Math.floor(new_s_w / divide_by); //Number of columns
 for (let i = 0; i < rows_count; i++)

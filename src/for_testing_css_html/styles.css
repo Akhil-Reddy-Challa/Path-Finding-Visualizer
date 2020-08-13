@@ -1,3 +1,6 @@
+* {
+  background-color: gray;
+}
 table {
   border-collapse: seperate;
   border-spacing: 2px;
@@ -9,4 +12,34 @@ td {
 .box {
   height: 22px;
   width: 22px;
+}
+.div_box {
+  height: 100px;
+  width: 100px;
+}
+.wall {
+  animation-name: wallAnimation;
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running; /*(Has no affect on the effect)Can be removed*/
+}
+@keyframes wallAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgb(12, 53, 71);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(12, 53, 71);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(12, 53, 71);
+  }
 }
