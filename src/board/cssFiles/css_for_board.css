@@ -34,7 +34,7 @@ td {
   animation-direction: alternate;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running; /*(Has no affect on the effect)Can be removed*/
+  animation-play-state: running; /*(Has no affect on the effect, Can be removed*/
 }
 @keyframes boxAnimation {
   0% {

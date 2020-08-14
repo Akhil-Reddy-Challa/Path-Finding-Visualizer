@@ -9,12 +9,17 @@ class Board extends Component {
     };
   }
   clearTheBoard = () => {
+    var count = 0;
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
-        let table_data = document.getElementById([i, j]);
-        table_data.setAttribute("class", "normalBox");
+        if (grid_array[i][j] === 1) {
+          document.getElementById([i, j]).setAttribute("class", "normalBox");
+          count++;
+          grid_array[i][j] = 0;
+        }
       }
     }
+    console.log(" ", count);
   };
   mouseButtonClicked = (node) => {
     this.setState({ mouseButtonPressed: true });
@@ -65,19 +70,17 @@ class Board extends Component {
     for (let i = 0; i < columns_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < rows_count; j++) {
-          console.log("j,i", [j, i]);
-          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 5);
+          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 10);
         }
       } else {
         for (let j = rows_count - 1; j >= 0; j--) {
-          console.log("- j,i", [j, i]);
-          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 5);
+          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 10);
         }
       }
     }
     //After the traversal, clear the board
     //As the above loops executes quickly, we should use settimeout for below statement
-    setTimeout(() => this.clearTheBoard(), timer * 10);
+    setTimeout(() => this.clearTheBoard(), timer * 20);
   };
   render() {
     return (
