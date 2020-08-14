@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./cssFiles/css_for_board.css";
-
+import { createBoard } from "../logicFiles/getDimensions.js";
 class Board extends Component {
   constructor() {
     super();
@@ -12,81 +12,72 @@ class Board extends Component {
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
         let table_data = document.getElementById([i, j]);
-        table_data.setAttribute("class", "box");
+        table_data.setAttribute("class", "normalBox");
       }
     }
   };
   mouseButtonClicked = (node) => {
     this.setState({ mouseButtonPressed: true });
-    let table_data = document.getElementById(node);
     if (grid_array[node[0]][node[1]] === 1) {
       //Already Colored
       grid_array[node[0]][node[1]] = 0; //De-color it
-      table_data.setAttribute("class", "box");
+      document.getElementById(node).setAttribute("class", "normalBox");
     } else {
-      table_data.setAttribute("class", "colorfulBox animateBox");
-      grid_array[node[0]][node[1]] = 1;
+      this.changeTheColorofNode(node);
     }
   };
   mouseBtnReleased = () => {
     this.setState({ mouseButtonPressed: false });
   };
-  changeColorOfNode = (node) => {
+  mouseHover = (node) => {
     if (this.state.mouseButtonPressed) {
-      let table_data = document.getElementById(node);
-      table_data.setAttribute("class", "colorfulBox animateBox");
-      grid_array[node[0]][node[1]] = 1;
+      this.changeTheColorofNode(node);
     }
+  };
+  changeTheColorofNode = (coordinates) => {
+    let elementPosition = document.getElementById(coordinates);
+    elementPosition.setAttribute("class", "animateBox");
+    grid_array[coordinates[0]][coordinates[1]] = 1;
   };
   traverseBoardFromLeftToRight = () => {
     //Clear Board once
     this.clearTheBoard();
-    var timer = 1; //1 millisecond
+    var timer = 1;
     for (let i = 0; i < rows_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < columns_count; j++) {
-          //console.log("color node(i,j)", i, j);
-          let table_data = document.getElementById([i, j]);
-          setTimeout(function () {
-            table_data.setAttribute("class", "colorfulBox animateBox");
-          }, timer++ * 8);
+          setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 5);
         }
       } else {
         for (let j = columns_count - 1; j >= 0; j--) {
-          //console.log("color node(i,j)", i, j);
-          let table_data = document.getElementById([i, j]);
-          setTimeout(function () {
-            table_data.setAttribute("class", "colorfulBox animateBox");
-          }, timer++ * 8);
+          setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 5);
         }
       }
     }
-    this.clearTheBoard();
+    //After the traversal, clear the board
+    //As the above loops executes quickly, we should use settimeout for below statement
+    setTimeout(() => this.clearTheBoard(), timer * 10);
   };
   traverseBoardFromTopToBottom = () => {
     //Clear Board once
     this.clearTheBoard();
-    var timer = 1; //1 millisecond
+    var timer = 1;
     for (let i = 0; i < columns_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < rows_count; j++) {
-          //console.log("color node(i,j)", i, j);
-          let table_data = document.getElementById([j, i]);
-          setTimeout(function () {
-            table_data.setAttribute("class", "colorfulBox animateBox");
-          }, timer++ * 8);
+          console.log("j,i", [j, i]);
+          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 5);
         }
       } else {
         for (let j = rows_count - 1; j >= 0; j--) {
-          //console.log("color node(i,j)", i, j);
-          let table_data = document.getElementById([j, i]);
-          setTimeout(function () {
-            table_data.setAttribute("class", "colorfulBox animateBox");
-          }, timer++ * 8);
+          console.log("- j,i", [j, i]);
+          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 5);
         }
       }
     }
-    this.clearTheBoard();
+    //After the traversal, clear the board
+    //As the above loops executes quickly, we should use settimeout for below statement
+    setTimeout(() => this.clearTheBoard(), timer * 10);
   };
   render() {
     return (
@@ -108,7 +99,7 @@ class Board extends Component {
                 <tr id={row_number} key={row_number}>
                   {row.map((col, col_number) => (
                     <td
-                      className="box"
+                      className="normalBox"
                       id={[row_number, col_number]}
                       key={col_number}
                       onMouseDown={() =>
@@ -118,7 +109,7 @@ class Board extends Component {
                         this.mouseBtnReleased([row_number, col_number])
                       }
                       onMouseEnter={() =>
-                        this.changeColorOfNode([row_number, col_number])
+                        this.mouseHover([row_number, col_number])
                       }
                     ></td>
                   ))}
@@ -132,13 +123,6 @@ class Board extends Component {
   }
 }
 export default Board;
-const screen_width = window.innerWidth;
-const screen_height = window.innerHeight;
-const new_s_w = screen_width - 20; //Subtract 2px from right & 2px from left
-const new_s_h = screen_height - 120; //Preserve 100px from top for Logo, 2px from bottom
-const grid_array = [];
-const divide_by = 26; //Box occupies 18px+1px(border)+1px(padding)+gap b/w rows,cols
-const rows_count = Math.floor(new_s_h / divide_by); //Number of rows
-const columns_count = Math.floor(new_s_w / divide_by); //Number of columns
-for (let i = 0; i < rows_count; i++)
-  grid_array.push(new Array(columns_count).fill(0));
+const grid_array = createBoard();
+const rows_count = grid_array.length; //Number of rows
+const columns_count = grid_array[0].length; //Number of columns
