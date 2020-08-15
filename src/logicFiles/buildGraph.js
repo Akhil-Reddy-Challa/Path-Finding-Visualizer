@@ -1,56 +1,48 @@
-import { shareWidthandHeight } from "./getDimensions.js";
-export function helper() {
-  main();
+import { buildAdjacencyList } from "./buildAdjacencyList.js";
+export function helper(grid_arr) {
+  grid = grid_arr;
+  number_of_rows = grid.length;
+  number_of_columns = grid[0].length;
+  main(); //Computes adjacencyList
+  traversal(1, 200);
+  return path;
 }
-var adjacency_list = new Map();
+let number_of_rows = 0;
+let number_of_columns = 0;
+let grid = [];
+let adjacency_List = new Map();
 function main() {
-  let grid = shareWidthandHeight();
-  let row = grid.length; //Number of rows
-  let column = grid[0].length; //Number of columns
-  generateAdjacencyList(grid, row, column);
-  console.log(adjacency_list);
+  console.log("r,c:", number_of_rows, number_of_columns);
+  //Build Adjacency_List for our Graph
+  adjacency_List = buildAdjacencyList(grid, number_of_rows, number_of_columns);
+  //Builded -------------Adjacency List-----------
 }
-const directions = [
-  [0, 1], //left
-  [1, 0], //down
-  [0, -1], //left
-  [-1, 0], //Top
-];
-function generateAdjacencyList(grid, r, c) {
-  console.log("Initial grid", grid);
-  for (let i = 0; i < r; i++) {
-    for (let j = 0; j < c; j++) {
-      if (grid[i][j] === 1)
-        //Check all four sides for a path
-        getNeighbours(grid, i, j, r, c);
+let path = [];
+function traversal(start, end) {
+  //1) DFS
+  let visited = new Array(number_of_columns * number_of_rows).fill(false);
+  // for (let [key, value] of adjacency_List.entries()) {
+  //   console.log(key + " = " + value);
+  // }
+
+  findPathUsingDFS(start, end, [], visited);
+  //console.log("Path:", path);
+}
+function findPathUsingDFS(start, destination, path_storage, visited) {
+  //console.log("s,e", start, destination);
+  if (visited[destination]) {
+    //console.log("Found path", path_storage);
+    path = path_storage;
+    return;
+  }
+  visited[start] = true;
+  let neighbour_nodes = [];
+  if (adjacency_List.has(start)) neighbour_nodes = adjacency_List.get(start);
+  for (let connection of neighbour_nodes) {
+    //console.log("connection:", connection);
+    if (!visited[connection]) {
+      path_storage.push(connection);
+      return findPathUsingDFS(connection, destination, path_storage, visited);
     }
   }
-  //console.log("a_list: ");
-}
-function getNeighbours(grid, i, j, r, c) {
-  //console.log("Node: (i,j)", i, j);
-  var neighbouring_nodes = [];
-  //adjacency_list.set([i, j], [i + direction[0], j + direction[1]]);
-  for (let k = 0; k < 4; k++) {
-    let direction = directions[k];
-    if (inBounds(i, j, direction, r, c)) {
-      neighbouring_nodes.push([i + direction[0], j + direction[1]]);
-      //   console.log(
-      //     "Adding node(i,j) to list",
-      //     i + direction[0],
-      //     j + direction[1]
-      //   );
-    }
-  }
-  if (neighbouring_nodes.length !== 0) {
-    //console.log("n_nodes: ", neighbouring_nodes);
-    adjacency_list.set([i, j], neighbouring_nodes);
-  }
-}
-function inBounds(i, j, direction, r, c) {
-  let new_i = i + direction[0];
-  let new_j = j + direction[1];
-  //console.log("n_i,n_j", new_i, new_j);
-  if (new_i >= 0 && new_i < c && new_j >= 0 && new_j < r) return true;
-  return false;
 }

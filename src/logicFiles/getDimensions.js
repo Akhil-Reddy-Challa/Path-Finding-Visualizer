@@ -1,7 +1,7 @@
 export function createBoard() {
   return calculateDimensionsForBoard(0);
 }
-function calculateDimensionsForBoard(filler) {
+function calculateDimensionsForBoard() {
   const screen_width = window.innerWidth;
   const screen_height = window.innerHeight;
   const new_s_w = screen_width - 20; //Subtract 2px from right & 2px from left
@@ -11,12 +11,9 @@ function calculateDimensionsForBoard(filler) {
   const columns_count = Math.floor(new_s_w / divide_by); //Number of columns
   const grid_array = [];
   for (let i = 0; i < rows_count; i++)
-    grid_array.push(new Array(columns_count).fill(filler));
+    grid_array.push(new Array(columns_count).fill(0));
   return grid_array;
 }
 /*
 This is used to calculate the board size, like number of rows and columns
 */
-export function shareWidthandHeight() {
-  return calculateDimensionsForBoard(1);
-}
