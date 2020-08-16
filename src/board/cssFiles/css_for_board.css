@@ -13,8 +13,6 @@ td {
   border: 1px solid #2980b9;
   height: 26px;
   width: auto;
-}
-.normalBox {
   padding: 0px;
 }
 .header_box {
@@ -23,7 +21,7 @@ td {
   justify-content: space-around;
   align-items: center;
 }
-.animateBox {
+.wallBox {
   padding: 0px;
   animation-name: boxAnimation;
   animation-duration: 0.3s;

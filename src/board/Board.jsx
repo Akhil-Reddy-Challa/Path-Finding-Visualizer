@@ -14,22 +14,18 @@ class Board extends Component {
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
         if (grid_array[i][j] === 1) {
-          document.getElementById([i, j]).setAttribute("class", "normalBox");
-          grid_array[i][j] = 0;
+          this.removeWall([i, j]);
         }
       }
     }
   };
   mouseButtonClicked = (node) => {
-    if (!this.areEqual(node, startFlag) && !this.areEqual(node, endFlag)) {
-      this.setState({ mouseButtonPressed: true });
-      if (grid_array[node[0]][node[1]] === 1) {
-        //Already Colored
-        grid_array[node[0]][node[1]] = 0; //De-color it
-        document.getElementById(node).setAttribute("class", "normalBox");
-      } else if (grid_array[node[0]][node[1]] === 0) {
-        this.changeTheColorofNode(node);
-      }
+    this.setState({ mouseButtonPressed: true });
+    if (grid_array[node[0]][node[1]] === 1) {
+      //Already Colored
+      this.removeWall(node);
+    } else if (grid_array[node[0]][node[1]] === 0) {
+      this.createWall(node);
     }
   };
   mouseBtnReleased = () => {
@@ -39,52 +35,48 @@ class Board extends Component {
     if (this.state.mouseButtonPressed) {
       if (grid_array[node[0]][node[1]] === 1) {
         //Already Colored
-        grid_array[node[0]][node[1]] = 0; //De-color it
-        document.getElementById(node).setAttribute("class", "normalBox");
+        this.removeWall(node);
       } else if (grid_array[node[0]][node[1]] === 0) {
-        this.changeTheColorofNode(node);
+        this.createWall(node);
       }
     }
   };
-  changeTheColorofNode = (coordinates) => {
+  createWall = (coordinates) => {
     let elementPosition = document.getElementById(coordinates);
-    elementPosition.setAttribute("class", "animateBox");
+    elementPosition.setAttribute("class", "wallBox");
     grid_array[coordinates[0]][coordinates[1]] = 1;
   };
+  removeWall = (coordinates) => {
+    document.getElementById(coordinates).removeAttribute("class");
+    grid_array[coordinates[0]][coordinates[1]] = 0;
+  };
   traverseBoardFromLeftToRight = () => {
-    //Clear Board once
-    //this.clearTheBoard();
     var timer = 1;
     for (let i = 0; i < rows_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < columns_count; j++) {
-          setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 5);
+          setTimeout(() => this.createWall([i, j]), timer++ * 5);
         }
       } else {
         for (let j = columns_count - 1; j >= 0; j--) {
-          setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 5);
+          setTimeout(() => this.createWall([i, j]), timer++ * 5);
         }
       }
     }
   };
   traverseBoardFromTopToBottom = () => {
-    //Clear Board once
-    //this.clearTheBoard();
     var timer = 1;
     for (let i = 0; i < columns_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < rows_count; j++) {
-          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 10);
+          setTimeout(() => this.createWall([j, i]), timer++ * 10);
         }
       } else {
         for (let j = rows_count - 1; j >= 0; j--) {
-          setTimeout(() => this.changeTheColorofNode([j, i]), timer++ * 10);
+          setTimeout(() => this.createWall([j, i]), timer++ * 10);
         }
       }
     }
-    //After the traversal, clear the board
-    //As the above loops executes quickly, we should use settimeout for below statement
-    //setTimeout(() => this.clearTheBoard(), timer * 15);
   };
   DFSTraversal = () => {
     var path = pathFinder(grid_array, startFlag, endFlag);
@@ -93,74 +85,9 @@ class Board extends Component {
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 35);
+      setTimeout(() => this.createWall([i, j]), timer++ * 35);
     }
   };
-  componentDidMount() {
-    //Create a startFlag(<i></i>)
-    var startFlag = document.createElement("i");
-    startFlag.innerHTML = "place";
-    startFlag.setAttribute("draggable", "true");
-    //Now add styles to make that as flag
-    startFlag.setAttribute("class", "material-icons startFlag");
-    startFlag.setAttribute("id", "startFlag");
-    document.getElementById([0, 0]).appendChild(startFlag);
-    grid_array[0][0] = 2;
-    //Now create end flag
-    var endFlag = document.createElement("i");
-    endFlag.innerHTML = "place";
-    endFlag.setAttribute("draggable", "true");
-    //Now add styles to make that as flag
-    endFlag.setAttribute("class", "material-icons targetFlag");
-    endFlag.setAttribute("id", "targetFlag");
-    document.getElementById([4, 15]).appendChild(endFlag);
-    grid_array[4][15] = 3;
-  }
-  onDragStart = (ev, id) => {
-    console.log("drag Started for", id);
-    if (this.areEqual(id, startFlag)) {
-      ev.dataTransfer.setData("text/plain", id);
-    } else if (this.areEqual(id, endFlag)) {
-      ev.dataTransfer.setData("text/plain", id);
-      startFlaggedDragged = false;
-    }
-  };
-  onDragOver = (ev, m) => {
-    ev.preventDefault();
-  };
-  onDrop = (ev, droppingPlace) => {
-    console.log("dropping Place", droppingPlace);
-    if (
-      !this.areEqual(startFlag, droppingPlace) &&
-      !this.areEqual(endFlag, droppingPlace)
-    )
-      this.createNewFlag(droppingPlace);
-  };
-  areEqual = (arr1, arr2) => {
-    return arr1[0] === arr2[0] && arr1[1] === arr2[1];
-  };
-  createNewFlag(droppingPlace) {
-    console.log(droppingPlace);
-    var newFlag = document.createElement("i");
-    newFlag.innerHTML = "place";
-    newFlag.setAttribute("draggable", "true");
-    if (startFlaggedDragged) {
-      //Before setting new startFlag, remove old startFlag
-      document.getElementById("startFlag").remove();
-      newFlag.setAttribute("class", "material-icons startFlag");
-      newFlag.setAttribute("id", "startFlag");
-      document.getElementById(droppingPlace).appendChild(newFlag);
-      startFlag = droppingPlace;
-    } else {
-      //Before setting new endFlag, remove old endFlag
-      document.getElementById("targetFlag").remove();
-      newFlag.setAttribute("class", "material-icons targetFlag");
-      newFlag.setAttribute("id", "targetFlag");
-      document.getElementById(droppingPlace).appendChild(newFlag);
-      endFlag = droppingPlace;
-    }
-  }
-
   render() {
     return (
       <div>
@@ -182,17 +109,8 @@ class Board extends Component {
                 <tr id={row_number} key={row_number}>
                   {row.map((col, col_number) => (
                     <td
-                      className="normalBox"
                       id={[row_number, col_number]}
                       key={col_number}
-                      onDragStart={(e) =>
-                        this.onDragStart(e, [row_number, col_number])
-                      }
-                      draggable="true"
-                      onDragOver={(e) => this.onDragOver(e)}
-                      onDrop={(e) => {
-                        this.onDrop(e, [row_number, col_number]);
-                      }}
                       onMouseDown={() =>
                         this.mouseButtonClicked([row_number, col_number])
                       }
@@ -217,8 +135,8 @@ export default Board;
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
-var startFlag = [0, 0];
-var endFlag = [4, 15];
+let startFlag = [0, 0];
+let endFlag = [4, 15];
 let startFlaggedDragged = true;
 
 // https://www.w3schools.com/icons/icons_reference.asp
