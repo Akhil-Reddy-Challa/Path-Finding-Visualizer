@@ -94,8 +94,39 @@ class Board extends Component {
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 50);
+      setTimeout(() => this.changeTheColorofNode([i, j]), timer++ * 35);
     }
+  };
+  componentDidMount() {
+    console.log("r,c", rows_count, columns_count);
+    //Create a startFlag(<i></i>)
+    var startFlag = document.createElement("i");
+    startFlag.innerHTML = "place";
+    startFlag.setAttribute("draggable", "true");
+    //Now add styles to make that as flag
+    startFlag.setAttribute("class", "material-icons startFlag");
+    document.getElementById([0, 0]).appendChild(startFlag);
+    //Now create end flag
+    var endFlag = document.createElement("i");
+    endFlag.innerHTML = "place";
+    endFlag.setAttribute("draggable", "true");
+    //Now add styles to make that as flag
+    endFlag.setAttribute("class", "material-icons targetFlag");
+    document.getElementById([8, 50]).appendChild(endFlag);
+  }
+  drop = (ev) => {
+    console.log("Inside drop");
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById("flag"));
+  };
+  allowDrop = (ev) => {
+    console.log("Inside allowDrop");
+    ev.preventDefault();
+  };
+  drag = (ev) => {
+    console.log("Inside drag");
+    ev.dataTransfer.setData("text", ev.target.id);
   };
   render() {
     return (
@@ -130,6 +161,8 @@ class Board extends Component {
                       onMouseEnter={() =>
                         this.mouseHover([row_number, col_number])
                       }
+                      onDrop={() => this.drop}
+                      onDragOver={() => this.allowDrop}
                     ></td>
                   ))}
                 </tr>
@@ -145,3 +178,6 @@ export default Board;
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
+
+// https://www.w3schools.com/icons/icons_reference.asp
+// https://www.w3schools.com/html/html5_draganddrop.asp

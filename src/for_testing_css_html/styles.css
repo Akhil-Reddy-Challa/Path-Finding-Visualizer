@@ -1,23 +1,15 @@
-* {
-  background-color: gray;
-}
 table {
-  border-collapse: seperate;
-  border-spacing: 2px;
+  border-collapse: separate;
+  table-layout: fixed;
 }
 td {
-  border: 1px solid black;
-}
-
-.box {
-  height: 22px;
-  width: 22px;
-}
-.div_box {
-  height: 100px;
-  width: 100px;
+  border: 1px solid #2980b9;
+  height: 26px;
+  width: 26px;
 }
 .wall {
+  height: 100px;
+  width: 100px;
   animation-name: wallAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease;
@@ -42,4 +34,20 @@ td {
     transform: scale(1);
     background-color: rgb(12, 53, 71);
   }
+}
+#drag1:hover,
+#drag2:hover {
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari 3-8 */
+  transform: scale(1.8);
+}
+.icon1 {
+  font-size: 24px;
+  color: red;
+  transition: transform 0.3s;
+}
+.icon2 {
+  font-size: 24px;
+  color: rgb(25, 199, 25);
+  transition: transform 0.3s;
 }

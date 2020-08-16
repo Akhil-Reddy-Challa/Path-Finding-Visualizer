@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script>
+      function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+      function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+      }
+
+      function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+      }
+    </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
     <table>
       <tr>
-        <td class="box"></td>
-        <td class="box"></td>
-        <td class="box"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)">
+          <i
+            class="material-icons icon1"
+            draggable="true"
+            ondragstart="drag(event)"
+            id="drag1"
+            >place</i
+          >
+        </td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
       </tr>
       <tr>
-        <td class="box"></td>
-        <td class="box"></td>
-        <td class="box"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
       </tr>
       <tr>
-        <td class="box"></td>
-        <td class="box"></td>
-        <td class="box"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)">
+          <i
+            class="material-icons icon2"
+            draggable="true"
+            ondragstart="drag(event)"
+            id="drag2"
+            >place</i
+          >
+        </td>
       </tr>
     </table>
-    <!-- <div class="element">1111</div> -->
-    <div class="wall div_box">DIV-BOX</div>
+    <!-- <div class="wall">DIV-BOX</div> -->
   </body>
 </html>
 <!-- 

@@ -1,6 +1,4 @@
-* {
-  /* background-color: gray; */
-}
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 .container {
   margin-left: 2px;
   margin-right: 2px;
@@ -13,10 +11,11 @@ table {
 }
 td {
   border: 1px solid #2980b9;
+  height: 26px;
+  width: auto;
 }
 .normalBox {
-  height: 20px;
-  width: 20px;
+  padding: 0px;
 }
 .header_box {
   display: flex;
@@ -25,8 +24,7 @@ td {
   align-items: center;
 }
 .animateBox {
-  height: 20px;
-  width: 20px;
+  padding: 0px;
   animation-name: boxAnimation;
   animation-duration: 0.3s;
   animation-timing-function: ease;
@@ -50,4 +48,24 @@ td {
     transform: scale(1);
     background-color: #2c3e50;
   }
+}
+i {
+  font-size: 22px;
+  transition: transform 0.3s;
+  cursor: default;
+}
+.flagIconOff {
+  opacity: 0; /*This will hide the Flag Icon*/
+}
+.startFlag {
+  color: red;
+}
+.targetFlag {
+  color: green;
+}
+.startFlag:hover,
+.targetFlag:hover {
+  -ms-transform: scale(1.5); /* IE 9 */
+  -webkit-transform: scale(1.5); /* Safari 3-8 */
+  transform: scale(2);
 }

@@ -4,7 +4,7 @@ export function helper(grid_arr) {
   number_of_rows = grid.length;
   number_of_columns = grid[0].length;
   main(); //Computes adjacencyList
-  traversal(1, 200);
+  traversal(1, 491);
   return path;
 }
 let number_of_rows = 0;
@@ -12,7 +12,7 @@ let number_of_columns = 0;
 let grid = [];
 let adjacency_List = new Map();
 function main() {
-  console.log("r,c:", number_of_rows, number_of_columns);
+  //console.log("r,c:", number_of_rows, number_of_columns);
   //Build Adjacency_List for our Graph
   adjacency_List = buildAdjacencyList(grid, number_of_rows, number_of_columns);
   //Builded -------------Adjacency List-----------
@@ -25,12 +25,12 @@ function traversal(start, end) {
   //   console.log(key + " = " + value);
   // }
 
-  findPathUsingDFS(start, end, [], visited);
+  findPathUsingDFS(start, end, [start], visited);
   //console.log("Path:", path);
 }
 function findPathUsingDFS(start, destination, path_storage, visited) {
   //console.log("s,e", start, destination);
-  if (visited[destination]) {
+  if (start === destination) {
     //console.log("Found path", path_storage);
     path = path_storage;
     return;
