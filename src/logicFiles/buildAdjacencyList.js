@@ -2,7 +2,7 @@ export function buildAdjacencyList(grid, r, c) {
   let adjacency_list = new Map();
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
-      if (grid[i][j] === 0) {
+      if (grid[i][j] !== 1) {
         let number = convertIndexesToNumber(i, j, c);
         //console.log("number=", number);
         let neighbours = findNeighbours(i, j, r, c, grid);
@@ -32,7 +32,7 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   if (new_col_index < col_len) {
     //Right element is available
     //Now check if it is 0  or 1
-    if (grid[new_row_index][new_col_index] === 0) {
+    if (grid[new_row_index][new_col_index] !== 1) {
       //Add it to the neighbours array
       //Convert indexes to number
       numberOfIndex = convertIndexesToNumber(

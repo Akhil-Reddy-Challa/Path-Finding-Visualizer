@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./cssFiles/css_for_board.css";
 import { createBoard } from "../logicFiles/getDimensions.js";
-import { helper } from "../logicFiles/buildGraph";
+import { pathFinder } from "../logicFiles/buildGraph";
 
 class Board extends Component {
   constructor() {
@@ -21,36 +21,28 @@ class Board extends Component {
     }
   };
   mouseButtonClicked = (node) => {
-    if (this.notStartorEndFlag(node)) {
-      this.setState({ mouseButtonPressed: true });
-      if (grid_array[node[0]][node[1]] === 1) {
-        //Already Colored
-        grid_array[node[0]][node[1]] = 0; //De-color it
-        document.getElementById(node).setAttribute("class", "normalBox");
-      } else {
-        this.changeTheColorofNode(node);
-      }
+    this.setState({ mouseButtonPressed: true });
+    if (grid_array[node[0]][node[1]] === 1) {
+      //Already Colored
+      grid_array[node[0]][node[1]] = 0; //De-color it
+      document.getElementById(node).setAttribute("class", "normalBox");
+    } else if (grid_array[node[0]][node[1]] === 0) {
+      this.changeTheColorofNode(node);
     }
   };
   mouseBtnReleased = () => {
     this.setState({ mouseButtonPressed: false });
   };
   mouseHover = (node) => {
-    if (this.notStartorEndFlag(node) && this.state.mouseButtonPressed) {
+    if (this.state.mouseButtonPressed) {
       if (grid_array[node[0]][node[1]] === 1) {
         //Already Colored
         grid_array[node[0]][node[1]] = 0; //De-color it
         document.getElementById(node).setAttribute("class", "normalBox");
-      } else {
+      } else if (grid_array[node[0]][node[1]] === 0) {
         this.changeTheColorofNode(node);
       }
     }
-  };
-  notStartorEndFlag = (node) => {
-    return (
-      !(startFlag[0] === node[0] && startFlag[1] === node[1]) &&
-      !(endFlag[0] === node[0] && endFlag[1] === node[1])
-    );
   };
   changeTheColorofNode = (coordinates) => {
     let elementPosition = document.getElementById(coordinates);
@@ -96,7 +88,7 @@ class Board extends Component {
     //setTimeout(() => this.clearTheBoard(), timer * 15);
   };
   DFSTraversal = () => {
-    var path = helper(grid_array);
+    var path = pathFinder(grid_array, startFlag, endFlag);
     //console.log(path);
     var timer = 1;
     for (let node of path) {
@@ -106,7 +98,6 @@ class Board extends Component {
     }
   };
   componentDidMount() {
-    console.log("r,c", rows_count, columns_count);
     //Create a startFlag(<i></i>)
     var startFlag = document.createElement("i");
     startFlag.innerHTML = "place";
@@ -114,13 +105,15 @@ class Board extends Component {
     //Now add styles to make that as flag
     startFlag.setAttribute("class", "material-icons startFlag");
     document.getElementById([0, 0]).appendChild(startFlag);
+    grid_array[0][0] = 2;
     //Now create end flag
     var endFlag = document.createElement("i");
     endFlag.innerHTML = "place";
     endFlag.setAttribute("draggable", "true");
     //Now add styles to make that as flag
     endFlag.setAttribute("class", "material-icons targetFlag");
-    document.getElementById([8, 50]).appendChild(endFlag);
+    document.getElementById([4, 15]).appendChild(endFlag);
+    grid_array[4][15] = 3;
   }
   render() {
     return (
@@ -173,7 +166,7 @@ const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
 var startFlag = [0, 0];
-var endFlag = [8, 50];
+var endFlag = [4, 15];
 
 // https://www.w3schools.com/icons/icons_reference.asp
 // https://www.w3schools.com/html/html5_draganddrop.asp

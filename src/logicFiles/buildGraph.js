@@ -1,10 +1,14 @@
 import { buildAdjacencyList } from "./buildAdjacencyList.js";
-export function helper(grid_arr) {
+export function pathFinder(grid_arr, startNode, targetNode) {
   grid = grid_arr;
   number_of_rows = grid.length;
   number_of_columns = grid[0].length;
+  console.log(number_of_rows, number_of_columns);
   main(); //Computes adjacencyList
-  traversal(1, 491);
+  //startNode & endNode are arrays, so convert them to number using Formula(column_length * index1 + (index2 + 1))
+  startNode = number_of_columns * startNode[0] + (startNode[1] + 1);
+  targetNode = number_of_columns * targetNode[0] + (targetNode[1] + 1);
+  traversal(startNode, targetNode);
   return path;
 }
 let number_of_rows = 0;
