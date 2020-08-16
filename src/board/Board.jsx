@@ -21,20 +21,8 @@ class Board extends Component {
     }
   };
   mouseButtonClicked = (node) => {
-    this.setState({ mouseButtonPressed: true });
-    if (grid_array[node[0]][node[1]] === 1) {
-      //Already Colored
-      grid_array[node[0]][node[1]] = 0; //De-color it
-      document.getElementById(node).setAttribute("class", "normalBox");
-    } else {
-      this.changeTheColorofNode(node);
-    }
-  };
-  mouseBtnReleased = () => {
-    this.setState({ mouseButtonPressed: false });
-  };
-  mouseHover = (node) => {
-    if (this.state.mouseButtonPressed) {
+    if (this.notStartorEndFlag(node)) {
+      this.setState({ mouseButtonPressed: true });
       if (grid_array[node[0]][node[1]] === 1) {
         //Already Colored
         grid_array[node[0]][node[1]] = 0; //De-color it
@@ -43,6 +31,26 @@ class Board extends Component {
         this.changeTheColorofNode(node);
       }
     }
+  };
+  mouseBtnReleased = () => {
+    this.setState({ mouseButtonPressed: false });
+  };
+  mouseHover = (node) => {
+    if (this.notStartorEndFlag(node) && this.state.mouseButtonPressed) {
+      if (grid_array[node[0]][node[1]] === 1) {
+        //Already Colored
+        grid_array[node[0]][node[1]] = 0; //De-color it
+        document.getElementById(node).setAttribute("class", "normalBox");
+      } else {
+        this.changeTheColorofNode(node);
+      }
+    }
+  };
+  notStartorEndFlag = (node) => {
+    return (
+      !(startFlag[0] === node[0] && startFlag[1] === node[1]) &&
+      !(endFlag[0] === node[0] && endFlag[1] === node[1])
+    );
   };
   changeTheColorofNode = (coordinates) => {
     let elementPosition = document.getElementById(coordinates);
@@ -114,20 +122,6 @@ class Board extends Component {
     endFlag.setAttribute("class", "material-icons targetFlag");
     document.getElementById([8, 50]).appendChild(endFlag);
   }
-  drop = (ev) => {
-    console.log("Inside drop");
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById("flag"));
-  };
-  allowDrop = (ev) => {
-    console.log("Inside allowDrop");
-    ev.preventDefault();
-  };
-  drag = (ev) => {
-    console.log("Inside drag");
-    ev.dataTransfer.setData("text", ev.target.id);
-  };
   render() {
     return (
       <div>
@@ -178,6 +172,9 @@ export default Board;
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
+var startFlag = [0, 0];
+var endFlag = [8, 50];
 
 // https://www.w3schools.com/icons/icons_reference.asp
 // https://www.w3schools.com/html/html5_draganddrop.asp
+//https://medium.com/unlearninglabs/reactjs-implement-drag-and-drop-feature-without-using-external-libraries-ad8994429f1a
