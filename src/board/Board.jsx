@@ -20,11 +20,16 @@ class Board extends Component {
     }
   };
   mouseButtonClicked = (node) => {
+    if (this.areEqual(startFlag, node)) return;
+    else if (this.areEqual(finishFlag, node)) return;
+    let p_x = node[0]; //position_x
+    let p_y = node[1]; //position_y
+    console.log("im clicked", node);
     this.setState({ mouseButtonPressed: true });
-    if (grid_array[node[0]][node[1]] === 1) {
+    if (grid_array[p_x][p_y] === 1) {
       //Already Colored
       this.removeWall(node);
-    } else if (grid_array[node[0]][node[1]] === 0) {
+    } else if (grid_array[p_x][p_y] === 0) {
       this.createWall(node);
     }
   };
@@ -32,13 +37,13 @@ class Board extends Component {
     this.setState({ mouseButtonPressed: false });
   };
   mouseHover = (node) => {
-    if (this.state.mouseButtonPressed) {
-      if (grid_array[node[0]][node[1]] === 1) {
-        //Already Colored
-        this.removeWall(node);
-      } else if (grid_array[node[0]][node[1]] === 0) {
-        this.createWall(node);
-      }
+    //console.log("hoveringgg");
+    if (!this.state.mouseButtonPressed) return;
+    if (grid_array[node[0]][node[1]] === 1) {
+      //Already Colored
+      this.removeWall(node);
+    } else if (grid_array[node[0]][node[1]] === 0) {
+      this.createWall(node);
     }
   };
   createWall = (coordinates) => {
@@ -79,7 +84,7 @@ class Board extends Component {
     }
   };
   DFSTraversal = () => {
-    var path = pathFinder(grid_array, startFlag, endFlag);
+    var path = pathFinder(grid_array, startFlag, finishFlag);
     //console.log(path);
     var timer = 1;
     for (let node of path) {
@@ -87,6 +92,26 @@ class Board extends Component {
       let j = node - (i * columns_count + 1);
       setTimeout(() => this.createWall([i, j]), timer++ * 35);
     }
+  };
+  areEqual = (arr1, arr2) => {
+    return arr1[0] === arr2[0] && arr1[1] === arr2[1];
+  };
+  componentDidMount() {
+    console.log("Component mounted,deploying start & end Flags");
+    this.createStartFlag("startFlag", startFlag);
+    this.createFinishFlag("finishFlag", finishFlag);
+  }
+  createStartFlag = (className, position) => {
+    const div = document.createElement("div");
+    div.className = className;
+    document.getElementById(position).appendChild(div);
+    grid_array[startFlag[0]][startFlag[1]] = 2;
+  };
+  createFinishFlag = (className, position) => {
+    const div = document.createElement("div");
+    div.className = className;
+    document.getElementById(position).appendChild(div);
+    grid_array[finishFlag[0]][finishFlag[1]] = 3;
   };
   render() {
     return (
@@ -132,12 +157,12 @@ class Board extends Component {
   }
 }
 export default Board;
+let startFlag = [0, 0];
+let finishFlag = [1, 24];
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
-let startFlag = [0, 0];
-let endFlag = [4, 15];
-let startFlaggedDragged = true;
+//let startFlaggedDragged = true;
 
 // https://www.w3schools.com/icons/icons_reference.asp
 // https://www.w3schools.com/html/html5_draganddrop.asp

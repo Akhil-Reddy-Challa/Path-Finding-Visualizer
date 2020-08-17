@@ -1,6 +1,6 @@
 table {
-  border-collapse: separate;
-  table-layout: fixed;
+  border-collapse: collapse;
+  /* table-layout: fixed; */
 }
 td {
   border: 1px solid #2980b9;
@@ -35,19 +35,56 @@ td {
     background-color: rgb(12, 53, 71);
   }
 }
+.startNode {
+  height: 26px;
+  background-image: url("startFlag.png");
+  background-origin: padding-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: specialNodes;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+.finishNode {
+  height: 26px;
+  background-image: url("finishFlag.png");
+  background-origin: padding-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: specialNodes;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+@keyframes specialNodes {
+  0% {
+    transform: scale(0.3);
+    /* background-color: darkslategrey; */
+  }
+
+  50% {
+    transform: scale(1.3);
+    /* background-color: darkslategrey; */
+  }
+  100% {
+    transform: scale(1);
+    /* background-color: darkslategrey; */
+  }
+}
 #drag1:hover,
 #drag2:hover {
   -ms-transform: scale(1.5); /* IE 9 */
   -webkit-transform: scale(1.5); /* Safari 3-8 */
   transform: scale(1.8);
-}
-.icon1 {
-  font-size: 24px;
-  color: red;
-  transition: transform 0.3s;
-}
-.icon2 {
-  font-size: 24px;
-  color: rgb(25, 199, 25);
-  transition: transform 0.3s;
 }

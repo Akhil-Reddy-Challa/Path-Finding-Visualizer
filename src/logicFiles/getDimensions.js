@@ -1,5 +1,5 @@
 export function createBoard() {
-  return calculateDimensionsForBoard(0);
+  return calculateDimensionsForBoard();
 }
 function calculateDimensionsForBoard() {
   const screen_width = window.innerWidth;

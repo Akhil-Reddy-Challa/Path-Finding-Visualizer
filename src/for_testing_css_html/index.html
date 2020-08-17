@@ -14,7 +14,6 @@
       function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
       }
-
       function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
@@ -26,34 +25,32 @@
   <body>
     <table>
       <tr>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+      </tr>
+      <tr>
+        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
         <td ondrop="drop(event)" ondragover="allowDrop(event)">
-          <i
-            class="material-icons icon1"
-            draggable="true"
-            ondragstart="drag(event)"
+          <div
             id="drag1"
-            >place</i
-          >
+            ondragstart="drag(event)"
+            class="startNode"
+            draggable="true"
+          ></div>
         </td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-      </tr>
-      <tr>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
+        <td class="startNode"></td>
       </tr>
       <tr>
         <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
         <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
         <td ondrop="drop(event)" ondragover="allowDrop(event)">
-          <i
-            class="material-icons icon2"
-            draggable="true"
-            ondragstart="drag(event)"
+          <div
             id="drag2"
-            >place</i
-          >
+            ondragstart="drag(event)"
+            class="finishNode"
+            draggable="true"
+          ></div>
         </td>
       </tr>
     </table>

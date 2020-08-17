@@ -9,12 +9,14 @@ table {
   table-layout: fixed;
   width: 100%;
 }
+
 td {
   border: 1px solid #2980b9;
   height: 26px;
   width: auto;
   padding: 0px;
 }
+
 .header_box {
   display: flex;
   height: 100px;
@@ -47,23 +49,51 @@ td {
     background-color: #2c3e50;
   }
 }
-i {
-  font-size: 22px;
-  transition: transform 0.3s;
-  cursor: default;
-}
-.flagIconOff {
-  opacity: 0; /*This will hide the Flag Icon*/
-}
+
 .startFlag {
-  color: red;
+  background-image: url("startFlag.png");
+  height: 23px;
+  /* background-origin: padding-box;
+  background-position: center;
+  background-repeat: no-repeat; */
+  background-size: contain;
+  animation-name: specialNodes;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
-.targetFlag {
-  color: green;
+@keyframes specialNodes {
+  0% {
+    transform: scale(0.3);
+    /* background-color: darkslategrey; */
+  }
+
+  50% {
+    transform: scale(1.5);
+    /* background-color: darkslategrey; */
+  }
+  100% {
+    transform: scale(1);
+    /* background-color: darkslategrey; */
+  }
 }
-.startFlag:hover,
-.targetFlag:hover {
-  -ms-transform: scale(1.5); /* IE 9 */
-  -webkit-transform: scale(1.5); /* Safari 3-8 */
-  transform: scale(2);
+.finishFlag {
+  height: 24px;
+  background-image: url("finishFlag.png");
+  background-origin: padding-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation-name: specialNodes;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
