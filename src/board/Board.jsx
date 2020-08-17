@@ -103,7 +103,8 @@ class Board extends Component {
   }
   createNewStartFlag = (className, position) => {
     const div = document.createElement("div");
-    div.className = className;
+    div.className = "material-icons " + className;
+    div.innerHTML = "place"; //This will give us location_marker Icon
     div.setAttribute("draggable", "true"); //So it can be dragged along
     div.id = className; //This should be done, it will assist us during deleting Flag
     document.getElementById(position).appendChild(div);
@@ -111,7 +112,8 @@ class Board extends Component {
   };
   createNewFinishFlag = (className, position) => {
     const div = document.createElement("div");
-    div.className = className;
+    div.className = "material-icons " + className;
+    div.innerHTML = "place"; //This will give us location_marker Icon
     div.id = className;
     div.setAttribute("draggable", "true"); //So it can be dragged along
     document.getElementById(position).appendChild(div);
@@ -209,13 +211,9 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [2, 0];
-let finishFlag = [1, 24];
+let startFlag = [2, 5];
+let finishFlag = [1, 20];
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
 let startFlagDragged = true;
-
-// https://www.w3schools.com/icons/icons_reference.asp
-// https://www.w3schools.com/html/html5_draganddrop.asp
-//https://medium.com/unlearninglabs/reactjs-implement-drag-and-drop-feature-without-using-external-libraries-ad8994429f1a
