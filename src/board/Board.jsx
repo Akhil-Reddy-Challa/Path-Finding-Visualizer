@@ -52,8 +52,8 @@ class Board extends Component {
     grid_array[coordinates[0]][coordinates[1]] = 1;
   };
   removeWall = (coordinates) => {
-    document.getElementById(coordinates).removeAttribute("class");
-    grid_array[coordinates[0]][coordinates[1]] = 0;
+    document.getElementById(coordinates).removeAttribute("class"); //Makes Blockback to normal
+    grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
   };
   traverseBoardFromLeftToRight = () => {
     var timer = 1;
@@ -90,7 +90,7 @@ class Board extends Component {
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      setTimeout(() => this.createWall([i, j]), timer++ * 35);
+      setTimeout(() => this.createWall([i, j]), timer++ * 5);
     }
   };
   areEqual = (arr1, arr2) => {
@@ -98,20 +98,65 @@ class Board extends Component {
   };
   componentDidMount() {
     console.log("Component mounted,deploying start & end Flags");
-    this.createStartFlag("startFlag", startFlag);
-    this.createFinishFlag("finishFlag", finishFlag);
+    this.createNewStartFlag("startFlag", startFlag);
+    this.createNewFinishFlag("finishFlag", finishFlag);
   }
-  createStartFlag = (className, position) => {
+  createNewStartFlag = (className, position) => {
     const div = document.createElement("div");
     div.className = className;
+    div.setAttribute("draggable", "true"); //So it can be dragged along
+    div.id = className; //This should be done, it will assist us during deleting Flag
     document.getElementById(position).appendChild(div);
-    grid_array[startFlag[0]][startFlag[1]] = 2;
+    grid_array[startFlag[0]][startFlag[1]] = 2; //Useful to identify during traversal
   };
-  createFinishFlag = (className, position) => {
+  createNewFinishFlag = (className, position) => {
     const div = document.createElement("div");
     div.className = className;
+    div.id = className;
+    div.setAttribute("draggable", "true"); //So it can be dragged along
     document.getElementById(position).appendChild(div);
-    grid_array[finishFlag[0]][finishFlag[1]] = 3;
+    grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
+  };
+  onDragStart = (ev, element) => {
+    //console.log("drag Started for", element);
+    if (!this.areEqual(element, startFlag)) startFlagDragged = false;
+  };
+  onDragOver = (ev, m) => {
+    ev.preventDefault();
+  };
+  onDrop = (ev, droppingPlace) => {
+    //console.log("dropping Place", droppingPlace);
+    //Check if the dropping place is start or finish node place
+    //If yes, then do-nothing
+    if (
+      this.areEqual(droppingPlace, startFlag) ||
+      this.areEqual(droppingPlace, finishFlag)
+    )
+      return;
+    //Now we got new co-ordinates for start or end flag
+    //Firstly delete the old flag
+    if (startFlagDragged) {
+      this.deleteOldFlag("startFlag", droppingPlace);
+      this.createNewStartFlag("startFlag", droppingPlace);
+    } else {
+      this.deleteOldFlag("finishFlag", droppingPlace);
+      this.createNewFinishFlag("finishFlag", droppingPlace);
+    }
+    console.log("new_s,new_f", startFlag, finishFlag);
+    startFlagDragged = true;
+  };
+  deleteOldFlag = (typeOfFlag, new_position) => {
+    document.getElementById(typeOfFlag).remove(); //Deletes the flag
+    if (typeOfFlag === "startFlag") {
+      //Firstly make the old start_flag's grid_value==0
+      grid_array[startFlag[0]][startFlag[1]] = 0;
+      //Make the draggable attribute to false
+      //Now assign the new_position to startFlag
+      startFlag = new_position;
+    } else {
+      grid_array[finishFlag[0]][finishFlag[1]] = 0;
+      finishFlag = new_position;
+    }
   };
   render() {
     return (
@@ -136,6 +181,13 @@ class Board extends Component {
                     <td
                       id={[row_number, col_number]}
                       key={col_number}
+                      onDragStart={(e) =>
+                        this.onDragStart(e, [row_number, col_number])
+                      }
+                      onDragOver={(e) => this.onDragOver(e)}
+                      onDrop={(e) => {
+                        this.onDrop(e, [row_number, col_number]);
+                      }}
                       onMouseDown={() =>
                         this.mouseButtonClicked([row_number, col_number])
                       }
@@ -157,12 +209,12 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [0, 0];
+let startFlag = [2, 0];
 let finishFlag = [1, 24];
 const grid_array = createBoard();
 const rows_count = grid_array.length; //Number of rows
 const columns_count = grid_array[0].length; //Number of columns
-//let startFlaggedDragged = true;
+let startFlagDragged = true;
 
 // https://www.w3schools.com/icons/icons_reference.asp
 // https://www.w3schools.com/html/html5_draganddrop.asp
