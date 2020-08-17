@@ -84,13 +84,14 @@ class Board extends Component {
     }
   };
   DFSTraversal = () => {
+    console.log("dfs:", startFlag, finishFlag);
     var path = pathFinder(grid_array, startFlag, finishFlag);
-    //console.log(path);
+    console.log(path);
     var timer = 1;
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      setTimeout(() => this.createWall([i, j]), timer++ * 5);
+      setTimeout(() => this.createWall([i, j]), timer++ * 100);
     }
   };
   areEqual = (arr1, arr2) => {
@@ -213,7 +214,5 @@ class Board extends Component {
 export default Board;
 let startFlag = [2, 5];
 let finishFlag = [1, 20];
-const grid_array = createBoard();
-const rows_count = grid_array.length; //Number of rows
-const columns_count = grid_array[0].length; //Number of columns
+const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;

@@ -3,6 +3,8 @@ export function pathFinder(grid_arr, startNode, targetNode) {
   grid = grid_arr;
   number_of_rows = grid.length;
   number_of_columns = grid[0].length;
+  //console.log(grid);
+  console.log("s,t", startNode, targetNode);
   console.log(number_of_rows, number_of_columns);
   main(); //Computes adjacencyList
   //startNode & endNode are arrays, so convert them to number using Formula(column_length * index1 + (index2 + 1))

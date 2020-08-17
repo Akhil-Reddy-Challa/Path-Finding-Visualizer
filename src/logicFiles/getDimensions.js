@@ -12,7 +12,7 @@ function calculateDimensionsForBoard() {
   const grid_array = [];
   for (let i = 0; i < rows_count; i++)
     grid_array.push(new Array(columns_count).fill(0));
-  return grid_array;
+  return { grid_array, rows_count, columns_count };
 }
 /*
 This is used to calculate the board size, like number of rows and columns

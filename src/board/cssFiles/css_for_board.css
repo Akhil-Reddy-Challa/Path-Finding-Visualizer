@@ -69,7 +69,7 @@ td {
   }
 
   50% {
-    transform: scale(4);
+    transform: scale(2.5);
     /* background-color: darkslategrey; */
   }
   100% {
