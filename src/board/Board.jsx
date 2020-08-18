@@ -128,7 +128,6 @@ class Board extends Component {
     ev.preventDefault();
   };
   onDrop = (ev, droppingPlace) => {
-    //console.log("dropping Place", droppingPlace);
     //Check if the dropping place is start or finish node place
     //If yes, then do-nothing
     if (
@@ -136,8 +135,10 @@ class Board extends Component {
       this.areEqual(droppingPlace, finishFlag)
     )
       return;
-    //Now we got new co-ordinates for start or end flag
+    //Else, we got new co-ordinates for start or end flag
     //Firstly delete the old flag
+    //Then create new Flag
+    console.log("dropping_place", droppingPlace);
     if (startFlagDragged) {
       this.deleteOldFlag("startFlag", droppingPlace);
       this.createNewStartFlag("startFlag", droppingPlace);
@@ -153,13 +154,17 @@ class Board extends Component {
     if (typeOfFlag === "startFlag") {
       //Firstly make the old start_flag's grid_value==0
       grid_array[startFlag[0]][startFlag[1]] = 0;
-      //Make the draggable attribute to false
       //Now assign the new_position to startFlag
       startFlag = new_position;
     } else {
       grid_array[finishFlag[0]][finishFlag[1]] = 0;
       finishFlag = new_position;
     }
+    /*All set till now, but their is a caveat: */
+    //If our NEW dropping place is a Wall already
+    //For this case we need to destry the Wall
+    if (grid_array[new_position[0]][new_position[1]] === 1)
+      this.removeWall(new_position);
   };
   render() {
     return (
