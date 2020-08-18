@@ -53,6 +53,7 @@ td {
 .startFlag {
   font-size: 23px;
   color: red;
+  cursor: default;
   animation-name: rotateAnim;
   animation-duration: 2s;
   animation-timing-function: ease-out;
@@ -64,6 +65,7 @@ td {
 .finishFlag {
   font-size: 23px;
   color: green;
+  cursor: default;
   animation-name: rotateAnim;
   animation-duration: 2s;
   animation-timing-function: ease-out;
