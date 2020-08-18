@@ -94,8 +94,10 @@ class Board extends Component {
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document.getElementById([i, j]).setAttribute("class", "pathBox"),
-          /*this.createWall([i, j])*/ timer++ * 10
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawShortestPath"),
+          /*this.createWall([i, j])*/ timer++ * 20
         );
     }
   };
@@ -172,7 +174,6 @@ class Board extends Component {
       this.removeWall(new_position);
   };
   render() {
-    let number_for_display = 1;
     return (
       <div>
         <div className="header_box">
