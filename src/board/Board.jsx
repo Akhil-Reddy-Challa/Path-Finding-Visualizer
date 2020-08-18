@@ -24,7 +24,7 @@ class Board extends Component {
     else if (this.areEqual(finishFlag, node)) return;
     let p_x = node[0]; //position_x
     let p_y = node[1]; //position_y
-    console.log("im clicked", node);
+    //console.log("im clicked", node);
     this.setState({ mouseButtonPressed: true });
     if (grid_array[p_x][p_y] === 1) {
       //Already Colored
@@ -84,21 +84,26 @@ class Board extends Component {
     }
   };
   DFSTraversal = () => {
-    console.log("dfs:", startFlag, finishFlag);
+    //console.log("In Dfs: start:", startFlag, "end: ", finishFlag);
     var path = pathFinder(grid_array, startFlag, finishFlag);
-    console.log(path);
+    //console.log("Returned path: ", path);
     var timer = 1;
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      setTimeout(() => this.createWall([i, j]), timer++ * 100);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document.getElementById([i, j]).setAttribute("class", "pathBox"),
+          /*this.createWall([i, j])*/ timer++ * 10
+        );
     }
   };
   areEqual = (arr1, arr2) => {
     return arr1[0] === arr2[0] && arr1[1] === arr2[1];
   };
   componentDidMount() {
-    console.log("Component mounted,deploying start & end Flags");
+    //console.log("Component mounted,deploying start & end Flags");
     this.createNewStartFlag("startFlag", startFlag);
     this.createNewFinishFlag("finishFlag", finishFlag);
   }
@@ -138,7 +143,7 @@ class Board extends Component {
     //Else, we got new co-ordinates for start or end flag
     //Firstly delete the old flag
     //Then create new Flag
-    console.log("dropping_place", droppingPlace);
+    //console.log("dropping_place", droppingPlace);
     if (startFlagDragged) {
       this.deleteOldFlag("startFlag", droppingPlace);
       this.createNewStartFlag("startFlag", droppingPlace);
@@ -146,7 +151,7 @@ class Board extends Component {
       this.deleteOldFlag("finishFlag", droppingPlace);
       this.createNewFinishFlag("finishFlag", droppingPlace);
     }
-    console.log("new_s,new_f", startFlag, finishFlag);
+    //console.log("new_s,new_f", startFlag, finishFlag);
     startFlagDragged = true;
   };
   deleteOldFlag = (typeOfFlag, new_position) => {
@@ -167,6 +172,7 @@ class Board extends Component {
       this.removeWall(new_position);
   };
   render() {
+    let number_for_display = 1;
     return (
       <div>
         <div className="header_box">
@@ -217,7 +223,7 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [2, 5];
-let finishFlag = [1, 20];
+let startFlag = [2, 2];
+let finishFlag = [1, 5];
 const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;

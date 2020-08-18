@@ -3,6 +3,7 @@ export function buildAdjacencyList(grid, r, c) {
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
       if (grid[i][j] !== 1) {
+        //We should build adj_list for all nodes except Wall(i.e grid[][]===1)
         let number = convertIndexesToNumber(i, j, c);
         //console.log("number=", number);
         let neighbours = findNeighbours(i, j, r, c, grid);
@@ -31,8 +32,9 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   let new_col_index = index2 + 1;
   if (new_col_index < col_len) {
     //Right element is available
-    //Now check if it is 0  or 1
+    //Now check if it is 1(i.e 1===wall)
     if (grid[new_row_index][new_col_index] !== 1) {
+      //If not 1 then it not a wall
       //Add it to the neighbours array
       //Convert indexes to number
       numberOfIndex = convertIndexesToNumber(
@@ -48,7 +50,7 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   new_row_index = index1 + 1;
   new_col_index = index2;
   if (new_row_index < row_len) {
-    if (grid[new_row_index][new_col_index] === 0) {
+    if (grid[new_row_index][new_col_index] !== 1) {
       numberOfIndex = convertIndexesToNumber(
         new_row_index,
         new_col_index,
@@ -62,7 +64,7 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   new_row_index = index1 - 1;
   new_col_index = index2;
   if (new_row_index >= 0) {
-    if (grid[new_row_index][new_col_index] === 0) {
+    if (grid[new_row_index][new_col_index] !== 1) {
       numberOfIndex = convertIndexesToNumber(
         new_row_index,
         new_col_index,
@@ -76,7 +78,7 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   new_row_index = index1;
   new_col_index = index2 - 1;
   if (new_col_index >= 0) {
-    if (grid[new_row_index][new_col_index] === 0) {
+    if (grid[new_row_index][new_col_index] !== 1) {
       numberOfIndex = convertIndexesToNumber(
         new_row_index,
         new_col_index,

@@ -24,6 +24,10 @@ td {
   justify-content: space-around;
   align-items: center;
 }
+.pathBox {
+  padding: 0px;
+  background-color: green;
+}
 .wallBox {
   padding: 0px;
   animation-name: boxAnimation;
