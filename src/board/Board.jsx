@@ -100,10 +100,15 @@ class Board extends Component {
     }
   };
   DFSTraversal = () => {
-    //console.log("In Dfs: start:", startFlag, "end: ", finishFlag);
-    var path = pathFinder(grid_array, startFlag, finishFlag, "dfs");
-    console.log("DFS Returned path: ", path);
+    let { path, shortest_path_to_Target } = pathFinder(
+      grid_array,
+      startFlag,
+      finishFlag,
+      "dfs"
+    );
+    //console.log("DFS Returned path: ", path);
     var timer = 1;
+    //This will draw the path/depth covered by our DFS
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
@@ -112,26 +117,33 @@ class Board extends Component {
           () =>
             document
               .getElementById([i, j])
-              .setAttribute("class", "drawShortestPath"),
-          /*this.createWall([i, j])*/ timer++ * 10
+              .setAttribute("class", "drawDistanceCovered"),
+          timer++ * 10
         );
     }
-    for (let node of path) {
+    //This will draw the shortest_path if it exists
+    for (let node of shortest_path_to_Target) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document.getElementById([i, j]).setAttribute("class", "drawPath"),
-          /*this.createWall([i, j])*/ timer++ * 10
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawTheShortestPath"),
+          timer++ * 10
         );
     }
   };
   BFSTraversal = () => {
-    //console.log("In Dfs: start:", startFlag, "end: ", finishFlag);
-    var path = pathFinder(grid_array, startFlag, finishFlag, "bfs");
-    console.log("BFS Returned path: ", path);
+    let { path, shortest_path_to_Target } = pathFinder(
+      grid_array,
+      startFlag,
+      finishFlag,
+      "bfs"
+    );
     var timer = 1;
+    //This will draw the path/depth covered by our BFS
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
@@ -140,19 +152,22 @@ class Board extends Component {
           () =>
             document
               .getElementById([i, j])
-              .setAttribute("class", "drawShortestPath"),
-          /*this.createWall([i, j])*/ timer++ * 10
+              .setAttribute("class", "drawDistanceCovered"),
+          timer++ * 10
         );
     }
-    for (let node of path) {
+    //This will draw the shortest_path if it exists.
+    console.log("prinitng sp", shortest_path_to_Target);
+    for (let node of shortest_path_to_Target) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
-      if (!this.areEqual(finishFlag, node))
-        setTimeout(
-          () =>
-            document.getElementById([i, j]).setAttribute("class", "drawPath"),
-          /*this.createWall([i, j])*/ timer++ * 10
-        );
+      setTimeout(
+        () =>
+          document
+            .getElementById([i, j])
+            .setAttribute("class", "drawTheShortestPath"),
+        timer++ * 12
+      );
     }
   };
   areEqual = (arr1, arr2) => {

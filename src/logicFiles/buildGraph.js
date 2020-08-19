@@ -14,7 +14,7 @@ export function pathFinder(grid_arr, startNode, targetNode, algorithm) {
   if (algorithm === "dfs") DFS_Traversal(startNode, targetNode);
   else BFS_Traversal(startNode, targetNode);
 
-  return path;
+  return { path, shortest_path_to_Target };
 }
 let number_of_rows = 0;
 let number_of_columns = 0;
@@ -27,6 +27,7 @@ function main() {
   //Builded -------------Adjacency List-----------
 }
 let path = [];
+let shortest_path_to_Target = [];
 function DFS_Traversal(start, end) {
   //1) DFS
   let visited = new Array(number_of_columns * number_of_rows).fill(false);
@@ -57,29 +58,61 @@ function findPathUsingDFS(start, destination, path_storage, visited) {
     }
   }
 }
-function BFS_Traversal(start, end) {
-  var queue = [start];
-  let visited = new Array(number_of_columns * number_of_rows).fill(false);
-  var path_storage = [];
-  let peek = 0;
+function BFS_Traversal(start, targetNode) {
+  let visited = [];
+  let shortest_path = [];
+  let predecessor_array = [];
+  /*
+  predecessor_array stores all the previous nodes of current node
+  example: 0-1-3
+  For the above graph
+  pred_array = [-1,0,1]
+  It stores the node from which it can be reached
+  */
+  for (let i = 0; i < number_of_columns * number_of_rows; i++) {
+    visited.push(false);
+    predecessor_array.push(-1);
+  }
+  //------2 Components--------
+  //1) findPathUsingBFS === implements BFS to find if there is a path from start to end
+  //2) if the above return true, then we find the shortest path
+  if (findPathUsingBFS(start, targetNode, visited, predecessor_array)) {
+    //We have found a path using BFS
+    //Now we have to find the shortest Path using predecessor_array
+    let node = targetNode;
+    shortest_path.push(node);
+    while (predecessor_array[node] !== -1) {
+      shortest_path.push(predecessor_array[node]);
+      node = predecessor_array[node];
+    }
+  }
+  //Now assign the shortest_path, if it was calculated
+  shortest_path_to_Target = shortest_path;
+}
+function findPathUsingBFS(start, targetNode, visited, predecessor_storage) {
+  let queue = [start];
+  let nodes_travelled = []; //list_of_all_the_nodes_travelled
   while (queue.length !== 0) {
-    //console.log("s,e", queue[0], end, queue);
-    visited[queue[0]] = true;
-    path_storage.push(queue[0]);
-    if (queue[0] === end) {
-      console.log("path:", path_storage);
-      path = path_storage;
-      break;
-    } else {
-      if (adjacency_List.has(queue[0])) {
-        let neighbours = adjacency_List.get(queue[0]);
-        for (let neighbour of neighbours) {
-          if (!visited[neighbour]) queue.push(neighbour);
-          visited[neighbour] = true;
+    let node = queue.shift();
+    //console.log("s,e", node, targetNode, queue);
+    visited[node] = true; //Mark as visited
+    nodes_travelled.push(node);
+    let neighbouring_nodes = adjacency_List.get(node);
+    for (let i = 0; i < neighbouring_nodes.length; i++) {
+      let neighbour = neighbouring_nodes[i];
+      if (!visited[neighbour]) {
+        queue.push(neighbour);
+        predecessor_storage[neighbour] = node; //This will store the previous node of the neighbour
+        visited[neighbour] = true;
+        if (neighbour === targetNode) {
+          nodes_travelled.push(targetNode);
+          path = nodes_travelled;
+          return true;
         }
       }
     }
-    queue.shift();
   }
-  //path = path_storage;
+  //We are unable to reach destination Node
+  path = nodes_travelled;
+  return false;
 }
