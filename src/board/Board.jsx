@@ -60,11 +60,19 @@ class Board extends Component {
     for (let i = 0; i < rows_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < columns_count; j++) {
-          setTimeout(() => this.createWall([i, j]), timer++ * 5);
+          if (
+            !this.areEqual(startFlag, [i, j]) &&
+            !this.areEqual(finishFlag, [i, j])
+          )
+            setTimeout(() => this.createWall([i, j]), timer++ * 5);
         }
       } else {
         for (let j = columns_count - 1; j >= 0; j--) {
-          setTimeout(() => this.createWall([i, j]), timer++ * 5);
+          if (
+            !this.areEqual(startFlag, [i, j]) &&
+            !this.areEqual(finishFlag, [i, j])
+          )
+            setTimeout(() => this.createWall([i, j]), timer++ * 5);
         }
       }
     }
@@ -74,19 +82,27 @@ class Board extends Component {
     for (let i = 0; i < columns_count; i++) {
       if (i % 2 === 0) {
         for (let j = 0; j < rows_count; j++) {
-          setTimeout(() => this.createWall([j, i]), timer++ * 10);
+          if (
+            !this.areEqual(startFlag, [j, i]) &&
+            !this.areEqual(finishFlag, [j, i])
+          )
+            setTimeout(() => this.createWall([j, i]), timer++ * 10);
         }
       } else {
         for (let j = rows_count - 1; j >= 0; j--) {
-          setTimeout(() => this.createWall([j, i]), timer++ * 10);
+          if (
+            !this.areEqual(startFlag, [j, i]) &&
+            !this.areEqual(finishFlag, [j, i])
+          )
+            setTimeout(() => this.createWall([j, i]), timer++ * 10);
         }
       }
     }
   };
   DFSTraversal = () => {
     //console.log("In Dfs: start:", startFlag, "end: ", finishFlag);
-    var path = pathFinder(grid_array, startFlag, finishFlag);
-    //console.log("Returned path: ", path);
+    var path = pathFinder(grid_array, startFlag, finishFlag, "dfs");
+    console.log("DFS Returned path: ", path);
     var timer = 1;
     for (let node of path) {
       let i = Math.floor((node - 1) / columns_count);
@@ -97,7 +113,45 @@ class Board extends Component {
             document
               .getElementById([i, j])
               .setAttribute("class", "drawShortestPath"),
-          /*this.createWall([i, j])*/ timer++ * 20
+          /*this.createWall([i, j])*/ timer++ * 10
+        );
+    }
+    for (let node of path) {
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document.getElementById([i, j]).setAttribute("class", "drawPath"),
+          /*this.createWall([i, j])*/ timer++ * 10
+        );
+    }
+  };
+  BFSTraversal = () => {
+    //console.log("In Dfs: start:", startFlag, "end: ", finishFlag);
+    var path = pathFinder(grid_array, startFlag, finishFlag, "bfs");
+    console.log("BFS Returned path: ", path);
+    var timer = 1;
+    for (let node of path) {
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawShortestPath"),
+          /*this.createWall([i, j])*/ timer++ * 10
+        );
+    }
+    for (let node of path) {
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document.getElementById([i, j]).setAttribute("class", "drawPath"),
+          /*this.createWall([i, j])*/ timer++ * 10
         );
     }
   };
@@ -186,6 +240,7 @@ class Board extends Component {
             Traverse Board(T->D)!
           </button>
           <button onClick={() => this.DFSTraversal()}>DFS</button>
+          <button onClick={() => this.BFSTraversal()}>BFS</button>
         </div>
         <div className="container">
           <table>
@@ -225,6 +280,6 @@ class Board extends Component {
 }
 export default Board;
 let startFlag = [2, 2];
-let finishFlag = [1, 5];
+let finishFlag = [4, 4];
 const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;

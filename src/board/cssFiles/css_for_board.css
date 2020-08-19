@@ -37,16 +37,41 @@ td {
 @keyframes shortestPathAnimation {
   0% {
     transform: scale(0.3);
-    background-color: greenyellow;
+    background-color: #c2e59c;
   }
   50% {
     transform: scale(1.2);
-    background-color: greenyellow;
+    background-color: #c2e59c;
   }
 
   100% {
     transform: scale(1);
-    background-color: greenyellow;
+    background-color: #c2e59c;
+  }
+}
+.drawPath {
+  padding: 0px;
+  animation-name: shortestPath;
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.3);
+    background-color: #64b3f4;
+  }
+  50% {
+    transform: scale(1.2);
+    background-color: #64b3f4;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #64b3f4;
   }
 }
 .wallBox {
