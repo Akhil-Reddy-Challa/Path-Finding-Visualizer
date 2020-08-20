@@ -13,9 +13,7 @@ class Board extends Component {
   clearTheBoard = () => {
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
-        if (grid_array[i][j] === 1) {
-          this.removeWall([i, j]);
-        }
+        this.removeWall([i, j]);
       }
     }
   };
@@ -52,8 +50,16 @@ class Board extends Component {
     grid_array[coordinates[0]][coordinates[1]] = 1;
   };
   removeWall = (coordinates) => {
-    document.getElementById(coordinates).removeAttribute("class"); //Makes Blockback to normal
-    grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
+    document.getElementById(coordinates).removeAttribute("class"); //Makes the node blank by deleting the class assigned
+    //Above works for all i.e(Wall,path_travelled by algorithm,shortest_path by algos)
+
+    //Caveat : Below statement(grid_arr[i][j]=0) makes our start_flag and end_flag zero's
+    //Hence adding conditional statement
+    if (
+      !this.areEqual(startFlag, coordinates) &&
+      !this.areEqual(finishFlag, coordinates)
+    )
+      grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
   };
   traverseBoardFromLeftToRight = () => {
     var timer = 1;

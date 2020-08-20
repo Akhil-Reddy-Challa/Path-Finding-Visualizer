@@ -27,8 +27,6 @@ function DFS_Traversal(start, targetNode) {
   let visited = new Array(number_of_columns * number_of_rows).fill(false);
 
   findPathUsingDFS(start, targetNode, [start], visited);
-
-  shortest_path_to_Target = path;
 }
 function findPathUsingDFS(start, destination, path_storage, visited) {
   //console.log("s,e", start, destination);
@@ -37,6 +35,7 @@ function findPathUsingDFS(start, destination, path_storage, visited) {
     //In the below code(for-statement), we use visited[destination]{This will stop our method from recursing after the path is found}
     visited[destination] = true;
     path = path_storage;
+    shortest_path_to_Target = path; //We use this because, we dont want our program to draw shortest_path_if the targetNode is not reachable
     return;
   }
   visited[start] = true;
@@ -49,6 +48,7 @@ function findPathUsingDFS(start, destination, path_storage, visited) {
       findPathUsingDFS(connection, destination, path_storage, visited);
     }
   }
+  path = path_storage;
 }
 function BFS_Traversal(start, targetNode) {
   let visited = [];
