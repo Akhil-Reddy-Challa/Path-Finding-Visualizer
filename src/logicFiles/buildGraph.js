@@ -23,28 +23,25 @@ function main() {
   adjacency_List = buildAdjacencyList(grid, number_of_rows, number_of_columns);
   //-------------Adjacency List Builded-----------
 }
-function DFS_Traversal(start, end) {
-  //1) DFS
+function DFS_Traversal(start, targetNode) {
   let visited = new Array(number_of_columns * number_of_rows).fill(false);
-  // for (let [key, value] of adjacency_List.entries()) {
-  //   console.log(key + " = " + value);
-  // }
 
-  findPathUsingDFS(start, end, [start], visited);
-  //console.log("Path:", path);
+  findPathUsingDFS(start, targetNode, [start], visited);
+
+  shortest_path_to_Target = path;
 }
 function findPathUsingDFS(start, destination, path_storage, visited) {
   //console.log("s,e", start, destination);
   if (start === destination) {
     //If Yes, mark destination as true
-    //In the below code(for-statement), we use visited[destination]{This will stop our method from recursing even after the path is found}
+    //In the below code(for-statement), we use visited[destination]{This will stop our method from recursing after the path is found}
     visited[destination] = true;
     path = path_storage;
     return;
   }
   visited[start] = true;
   let neighbour_nodes = [];
-  if (adjacency_List.has(start)) neighbour_nodes = adjacency_List.get(start);
+  neighbour_nodes = adjacency_List.get(start);
   for (let connection of neighbour_nodes) {
     //console.log("connection:", connection);
     if (!visited[connection] && !visited[destination]) {
@@ -68,11 +65,8 @@ function BFS_Traversal(start, targetNode) {
     visited.push(false);
     predecessor_array.push(-1);
   }
-  // for (let [key, value] of adjacency_List.entries()) {
-  //   console.log(key + " = " + value);
-  // }
   //------Below code can be divided into 2 Components--------
-  //1) findPathUsingBFS === implements BFS to find if there is a path from start to end
+  //1) findPathUsingBFS => implements BFS to find if there is a path from start to end
   //2) if the above return true, then we find the shortest path
   if (findPathUsingBFS(start, targetNode, visited, predecessor_array)) {
     //We have found a path using BFS

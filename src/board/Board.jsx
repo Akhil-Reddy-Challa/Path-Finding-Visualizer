@@ -121,7 +121,8 @@ class Board extends Component {
           timer++ * 10
         );
     }
-    //This will draw the shortest_path if it exists
+    //DFS does not gurantee/cannot_find a shortest_path
+    //Hence the shortest path traversal would be the same
     for (let node of shortest_path_to_Target) {
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
