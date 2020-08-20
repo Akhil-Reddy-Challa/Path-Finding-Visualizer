@@ -117,7 +117,7 @@ class Board extends Component {
           () =>
             document
               .getElementById([i, j])
-              .setAttribute("class", "drawDistanceCovered"),
+              .setAttribute("class", "drawDistanceTravelled"),
           timer++ * 10
         );
     }
@@ -152,13 +152,13 @@ class Board extends Component {
           () =>
             document
               .getElementById([i, j])
-              .setAttribute("class", "drawDistanceCovered"),
+              .setAttribute("class", "drawDistanceTravelled"),
           timer++ * 10
         );
     }
     //This will draw the shortest_path if it exists.
-    console.log("prinitng sp", shortest_path_to_Target);
-    for (let node of shortest_path_to_Target) {
+    for (let k = shortest_path_to_Target.length - 1; k > -1; k--) {
+      let node = shortest_path_to_Target[k];
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
       setTimeout(
