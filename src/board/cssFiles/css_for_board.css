@@ -10,14 +10,12 @@ table {
   table-layout: fixed;
   width: 100%;
 }
-
 td {
   border: 1px solid #2980b9;
   height: 26px;
   width: auto;
   padding: 0px;
 }
-
 .header_box {
   display: flex;
   height: 100px;
@@ -37,16 +35,16 @@ td {
 @keyframes drawTheShortestPath {
   0% {
     transform: scale(0.3);
-    background-color: #c2e59c;
+    background-color: #a5cc82;
   }
   50% {
     transform: scale(1.2);
-    background-color: #c2e59c;
+    background-color: #a5cc82;
   }
 
   100% {
     transform: scale(1);
-    background-color: #c2e59c;
+    background-color: #a5cc82;
   }
 }
 .drawDistanceTravelled {
@@ -99,7 +97,6 @@ td {
     background-color: #2c3e50;
   }
 }
-
 .startFlag {
   font-size: 23px;
   color: red;
@@ -127,5 +124,29 @@ td {
 @keyframes rotateAnim {
   100% {
     transform: rotate(360deg);
+  }
+}
+.rippleBox {
+  border-radius: 100%;
+  animation: ripple 1.2s ease-out;
+  animation-fill-mode: forwards;
+}
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+    background: #00467f;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(0.5);
+    background: #00467f;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    background: #00467f;
+    border-radius: 0%;
   }
 }

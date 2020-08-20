@@ -121,9 +121,7 @@ class Board extends Component {
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawDistanceTravelled"),
+            document.getElementById([i, j]).setAttribute("class", "rippleBox"),
           timer++ * 10
         );
     }
@@ -157,9 +155,7 @@ class Board extends Component {
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawDistanceTravelled"),
+            document.getElementById([i, j]).setAttribute("class", "rippleBox"),
           timer++ * 10
         );
     }
