@@ -301,7 +301,7 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [2, 2];
-let finishFlag = [4, 4];
+let startFlag = [12, 12];
+let finishFlag = [2, 24];
 const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;

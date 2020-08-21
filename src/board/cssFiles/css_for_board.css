@@ -24,55 +24,47 @@ td {
 }
 .drawTheShortestPath {
   animation-name: drawTheShortestPath;
-  animation-duration: 0.7s;
-  animation-timing-function: ease-in-out;
-  border-radius: 100%;
-  background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
 @keyframes drawTheShortestPath {
   0% {
     transform: scale(0.3);
+    border-radius: 100%;
+    background-color: #f9d423;
   }
   50% {
-    transform: scale(0.5);
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);
     border-radius: 10%;
-    background-image: linear-gradient(
-      to right,
-      rgb(182, 244, 146),
-      rgb(51, 139, 147)
-    );
+    background-color: #a8e063;
   }
 }
 .drawDistanceTravelled {
-  padding: 0px;
   animation-name: drawDistanceTravelled;
-  border-radius: 100%;
-  background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
-  animation-duration: 0.7s;
-  animation-timing-function: ease-in-out;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 }
 @keyframes drawDistanceTravelled {
   0% {
-    transform: scale(0);
-  }
-  25% {
-    transform: scale(0.25);
+    transform: scale(0.3);
+    border-radius: 100%;
+    background-color: #f9d423;
   }
   50% {
-    transform: scale(0.5);
+    background-color: #43e97b;
   }
   75% {
-    transform: scale(0.75);
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);
     border-radius: 10%;
-    background: #fda085;
+    background: #3498db;
   }
 }
 .wallBox {
