@@ -121,7 +121,9 @@ class Board extends Component {
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document.getElementById([i, j]).setAttribute("class", "rippleBox"),
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawDistanceTravelled"),
           timer++ * 10
         );
     }
@@ -136,7 +138,7 @@ class Board extends Component {
             document
               .getElementById([i, j])
               .setAttribute("class", "drawTheShortestPath"),
-          timer++ * 10
+          timer++ * 15
         );
     }
   };
@@ -155,7 +157,9 @@ class Board extends Component {
       if (!this.areEqual(finishFlag, node))
         setTimeout(
           () =>
-            document.getElementById([i, j]).setAttribute("class", "rippleBox"),
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawDistanceTravelled"),
           timer++ * 10
         );
     }
@@ -169,7 +173,7 @@ class Board extends Component {
           document
             .getElementById([i, j])
             .setAttribute("class", "drawTheShortestPath"),
-        timer++ * 12
+        timer++ * 13
       );
     }
   };

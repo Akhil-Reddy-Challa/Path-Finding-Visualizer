@@ -23,53 +23,56 @@ td {
   align-items: center;
 }
 .drawTheShortestPath {
-  padding: 0px;
   animation-name: drawTheShortestPath;
-  animation-duration: 0.3s;
-  animation-timing-function: ease;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
+  border-radius: 100%;
+  background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
   animation-fill-mode: forwards;
 }
 @keyframes drawTheShortestPath {
   0% {
     transform: scale(0.3);
-    background-color: #a5cc82;
   }
   50% {
-    transform: scale(1.2);
-    background-color: #a5cc82;
+    transform: scale(0.5);
   }
-
   100% {
     transform: scale(1);
-    background-color: #a5cc82;
+    border-radius: 10%;
+    background-image: linear-gradient(
+      to right,
+      rgb(182, 244, 146),
+      rgb(51, 139, 147)
+    );
   }
 }
 .drawDistanceTravelled {
   padding: 0px;
   animation-name: drawDistanceTravelled;
-  animation-duration: 0.3s;
-  animation-timing-function: ease;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
+  border-radius: 100%;
+  background-image: linear-gradient(to top, #e6b980 0%, #eacda3 100%);
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 }
 @keyframes drawDistanceTravelled {
   0% {
-    transform: scale(0.3);
-    background-color: #64b3f4;
+    transform: scale(0);
+  }
+  25% {
+    transform: scale(0.25);
   }
   50% {
-    transform: scale(1.2);
-    background-color: #64b3f4;
+    transform: scale(0.5);
   }
-
+  75% {
+    transform: scale(0.75);
+  }
   100% {
     transform: scale(1);
-    background-color: #64b3f4;
+    border-radius: 10%;
+    background: #fda085;
   }
 }
 .wallBox {
@@ -124,29 +127,5 @@ td {
 @keyframes rotateAnim {
   100% {
     transform: rotate(360deg);
-  }
-}
-.rippleBox {
-  border-radius: 100%;
-  animation: ripple 1.2s ease-out;
-  animation-fill-mode: forwards;
-}
-@keyframes ripple {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-    background: #00467f;
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(0.5);
-    background: #00467f;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-    background: #00467f;
-    border-radius: 0%;
   }
 }
