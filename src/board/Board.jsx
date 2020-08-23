@@ -17,6 +17,14 @@ class Board extends Component {
       }
     }
   };
+  clearThePath = () => {
+    for (let i = 0; i < rows_count; i++) {
+      for (let j = 0; j < columns_count; j++) {
+        if (grid_array[i][j] !== 1)
+          document.getElementById([i, j]).removeAttribute("class"); //Only removes the path covered by our traversal algorithms
+      }
+    }
+  };
   mouseButtonClicked = (node) => {
     if (this.areEqual(startFlag, node)) return;
     else if (this.areEqual(finishFlag, node)) return;
@@ -106,6 +114,9 @@ class Board extends Component {
     }
   };
   DFSTraversal = () => {
+    //Before Traversing, clear the path travelled by any of our algorithm
+    //Ex: If BFS was visualized first, and then DFS was clicked then the path would mess-up, hence clear the board
+    this.clearThePath();
     let { path, shortest_path_to_Target } = pathFinder(
       grid_array,
       startFlag,
@@ -143,11 +154,52 @@ class Board extends Component {
     }
   };
   BFSTraversal = () => {
+    //Before Traversing, clear the path travelled by any of our algorithm
+    //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
+    this.clearThePath();
     let { path, shortest_path_to_Target } = pathFinder(
       grid_array,
       startFlag,
       finishFlag,
       "bfs"
+    );
+    var timer = 1;
+    //This will draw the path/depth covered by our BFS
+    for (let node of path) {
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawDistanceTravelled"),
+          timer++ * 10
+        );
+    }
+    //This will draw the shortest_path if it exists.
+    for (let k = shortest_path_to_Target.length - 1; k > -1; k--) {
+      let node = shortest_path_to_Target[k];
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      setTimeout(
+        () =>
+          document
+            .getElementById([i, j])
+            .setAttribute("class", "drawTheShortestPath"),
+        timer++ * 13
+      );
+    }
+  };
+  DijkstrasTraversal = () => {
+    //Before Traversing, clear the path travelled by any of our algorithm
+    //Ex: If BFS was visualized first, and then Dijkstra was clicked then the path would mess-up, hence clear the path_on the board
+    this.clearThePath();
+    let { path, shortest_path_to_Target } = pathFinder(
+      grid_array,
+      startFlag,
+      finishFlag,
+      "dijkstras"
     );
     var timer = 1;
     //This will draw the path/depth covered by our BFS
@@ -255,6 +307,7 @@ class Board extends Component {
         <div className="header_box">
           <p>Path-Finding Visualizer</p>
           <button onClick={() => this.clearTheBoard()}>Clear-Board!</button>
+          <button onClick={() => this.clearThePath()}>ClearPath!</button>
           <button onClick={() => this.traverseBoardFromLeftToRight()}>
             Traverse Board(L->R)!
           </button>
@@ -263,6 +316,7 @@ class Board extends Component {
           </button>
           <button onClick={() => this.DFSTraversal()}>DFS</button>
           <button onClick={() => this.BFSTraversal()}>BFS</button>
+          <button onClick={() => this.DijkstrasTraversal()}>Dijkstra's</button>
         </div>
         <div className="container">
           <table>
@@ -301,7 +355,7 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [12, 12];
-let finishFlag = [2, 24];
+let startFlag = [0, 0];
+let finishFlag = [3, 3];
 const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;

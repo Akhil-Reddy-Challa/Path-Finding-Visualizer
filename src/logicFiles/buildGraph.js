@@ -7,6 +7,8 @@ let path = [];
 let shortest_path_to_Target = [];
 export function pathFinder(grid_arr, startNode, targetNode, algorithm) {
   grid = grid_arr;
+  path = [];
+  shortest_path_to_Target = [];
   number_of_rows = grid.length;
   number_of_columns = grid[0].length;
   main(); //Computes adjacencyList
@@ -14,8 +16,8 @@ export function pathFinder(grid_arr, startNode, targetNode, algorithm) {
   startNode = number_of_columns * startNode[0] + (startNode[1] + 1);
   targetNode = number_of_columns * targetNode[0] + (targetNode[1] + 1);
   if (algorithm === "dfs") DFS_Traversal(startNode, targetNode);
-  else BFS_Traversal(startNode, targetNode);
-
+  else if (algorithm === "bfs") BFS_Traversal(startNode, targetNode);
+  else dijkstraAlgorithm(startNode, targetNode);
   return { path, shortest_path_to_Target };
 }
 function main() {
@@ -84,7 +86,7 @@ function BFS_Traversal(start, targetNode) {
 }
 function findPathUsingBFS(start, targetNode, visited, predecessor_storage) {
   let queue = [start];
-  let nodes_travelled = []; //list_of_all_the_nodes_travelled
+  let nodes_travelled = []; //Stores the list_of_all_the_nodes_travelled
   while (queue.length !== 0) {
     let node = queue.shift();
     //console.log("s,e", node, targetNode, queue);
@@ -108,6 +110,81 @@ function findPathUsingBFS(start, targetNode, visited, predecessor_storage) {
     }
   }
   //At this point we are unable to reach destination Node
-  path = nodes_travelled;
+  path = nodes_travelled; //So store the path to represent the distance travelled by BFS
   return false;
+}
+function dijkstraAlgorithm(startNode, targetNode) {
+  /*
+   *Dijkstra only lets us find the shortest path between two nodes
+   *To find the path traversed we should use BFS
+   So this function is split into 2 parts
+   */
+  //----------------------------------------1st part Begins------------------------------------//
+  let distance = []; // For storing shortest distance to reach all nodes from source
+  let visited = [];
+  let predecessor_storage = []; //Useful for computing shortest_path
+  let total = number_of_columns * number_of_rows;
+
+  visited = new Array(total).fill(false);
+  predecessor_storage = new Array(total).fill(-1);
+  findPathUsingBFS(startNode, targetNode, visited, predecessor_storage);
+  //We have obtained the distance travelled to reach TargetNode using BFS
+  //----------------------------------------1st part ENDS ------------------------------------//
+  //Now re-initialize the arrays(visited,pred_array)
+  visited = new Array(total + 1).fill(false); //total+1 because our start node == 1
+  distance = new Array(total + 1).fill(Number.MAX_SAFE_INTEGER);
+  predecessor_storage = new Array(total + 1).fill(-1);
+  //----------------------------------------2nd Part Begins------------------------------------//
+  findShortestPathDijkstra(startNode, distance, visited, predecessor_storage);
+  //Now we have our distance and pred_array filled
+  //1) Check if we have a route to our target Node, i.e: If the targetNode is MAX_INT then there is no path from start to target
+  if (distance[targetNode] !== Number.MAX_SAFE_INTEGER) {
+    //Path exists
+    //Now extract the shortest_Path
+    let node = targetNode;
+    let shortest_path = [];
+    shortest_path.push(node);
+    while (node !== startNode && predecessor_storage[node] !== -1) {
+      //We should stop when we encounter our start Node, hence (node!==start)
+      shortest_path.push(predecessor_storage[node]);
+      node = predecessor_storage[node];
+    }
+    shortest_path_to_Target = shortest_path; //Set the global shortest_path
+  }
+  //----------------------------------------2nd Part ENDS------------------------------------//
+}
+function findShortestPathDijkstra(startNode, distance, visited, pred_array) {
+  let numberOfNodes = number_of_columns * number_of_rows;
+  let weight = 1; //Because we are dealing  with un-weighted graph, so the default would be 1
+  distance[startNode] = 0; // Make distance From startNode to startNode as Zero
+  // Find shortest path from source to all the remaining vertices
+  for (let i = 1; i < numberOfNodes; i++) {
+    let current_node = getNextMinimumDistance(distance, visited, numberOfNodes); // Get's new Minimum Distance from distance_array
+    visited[current_node] = true;
+    //Now calculate distance from current_node to rest of the nodes
+    if (adjacency_List.has(current_node)) {
+      //This helps to stop execution, when a wall is being iterated
+      let neighbouring_nodes = adjacency_List.get(current_node);
+      for (let neighbour of neighbouring_nodes) {
+        if (
+          !visited[neighbour] &&
+          distance[current_node] !== Number.MAX_SAFE_INTEGER &&
+          distance[current_node] + weight < distance[neighbour]
+        ) {
+          distance[neighbour] = distance[current_node] + 1;
+          pred_array[neighbour] = current_node;
+        }
+      }
+    }
+  }
+}
+function getNextMinimumDistance(dist, visited, numberOfNodes) {
+  let min = Number.MAX_SAFE_INTEGER,
+    min_index = -1;
+  for (let v = 0; v < numberOfNodes; v++)
+    if (visited[v] === false && dist[v] <= min) {
+      min = dist[v];
+      min_index = v;
+    }
+  return min_index;
 }

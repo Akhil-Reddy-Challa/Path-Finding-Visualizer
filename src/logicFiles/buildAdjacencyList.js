@@ -3,26 +3,19 @@ export function buildAdjacencyList(grid, r, c) {
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
       if (grid[i][j] !== 1) {
-        //We should build adj_list for all nodes except Wall(i.e grid[][]===1)
+        //We should build adj_list for all nodes except Wall(i.e grid[i][j]===1)
         let number = convertIndexesToNumber(i, j, c);
-        //console.log("number=", number);
         let neighbours = findNeighbours(i, j, r, c, grid);
         adjacency_list.set(number, neighbours);
-        //console.log("neighbours:", neighbours);
       }
     }
   }
-  //console.log("Adjacency_list_builded:");
-  // for (let [key, value] of adjacency_list.entries()) {
-  //   console.log(key + " = " + value);
-  // }
   return adjacency_list;
 }
 function convertIndexesToNumber(index1, index2, column_length) {
   return column_length * index1 + (index2 + 1);
 }
 function findNeighbours(index1, index2, row_len, col_len, grid) {
-  //console.log("searching for:", index1, index2);
   let numberOfIndex;
   //Check all the four directions(right,down,top,back) in the grid
   //------Begin-------
@@ -32,21 +25,20 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
   let new_col_index = index2 + 1;
   if (new_col_index < col_len) {
     //Right element is available
-    //Now check if it is 1(i.e 1===wall)
+    //Now check if it is 1(i.e wall === 1)
     if (grid[new_row_index][new_col_index] !== 1) {
       //If not 1 then it not a wall
       //Add it to the neighbours array
-      //Convert indexes to number
+      //Before that Convert indexes to number,for simplicity
       numberOfIndex = convertIndexesToNumber(
         new_row_index,
         new_col_index,
         col_len
       );
-      //console.log("1 Found at ", new_row_index, new_col_index);
       neighbours.push(numberOfIndex);
     }
   }
-  //2) Check for Bottom node
+  //2) Check the Bottom node
   new_row_index = index1 + 1;
   new_col_index = index2;
   if (new_row_index < row_len) {
@@ -56,11 +48,10 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
         new_col_index,
         col_len
       );
-      //console.log("2 Found at ", new_row_index, new_col_index);
       neighbours.push(numberOfIndex);
     }
   }
-  //3) Check for Top node
+  //3) Check the TopMost node
   new_row_index = index1 - 1;
   new_col_index = index2;
   if (new_row_index >= 0) {
@@ -70,11 +61,10 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
         new_col_index,
         col_len
       );
-      //console.log("3 Found at ", new_row_index, new_col_index);
       neighbours.push(numberOfIndex);
     }
   }
-  //4) Check for Left node
+  //4) Check the Left node
   new_row_index = index1;
   new_col_index = index2 - 1;
   if (new_col_index >= 0) {
@@ -84,9 +74,9 @@ function findNeighbours(index1, index2, row_len, col_len, grid) {
         new_col_index,
         col_len
       );
-      //console.log("4 Found at ", new_row_index, new_col_index);
       neighbours.push(numberOfIndex);
     }
   }
+  //Now send back all the neighbours collected
   return neighbours;
 }
