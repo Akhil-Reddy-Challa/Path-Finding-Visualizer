@@ -1,10 +1,70 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
-
-.container {
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-bottom: 2px;
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+* {
+  font-family: "Montserrat", sans-serif;
 }
+.graphContainer {
+  width: 100%;
+  white-space: nowrap;
+}
+.navbar {
+  background-color: #4286f4 !important;
+  border-radius: 0px;
+  margin-bottom: 0px;
+}
+/*Below is for Title-TEXT on Nav bar*/
+/*........................Starts.............*/
+.navbar-brand {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+.navbar > .container-fluid .navbar-brand {
+  margin-left: 2px; /*For the Title left margin*/
+}
+/*......................Ends.................*/
+/*Below is for buttons on Nav bar*/
+/*........................Starts.............*/
+.nav > li > a {
+  color: white;
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+.nav > li > a:hover {
+  transition: color 0.3s ease 0s;
+  background-color: transparent !important;
+  color: rgb(17, 223, 17);
+}
+.nav > li > a:active {
+  transition: color 0.3s ease 0s;
+  background-color: transparent !important;
+  color: white;
+}
+/*......................Ends.................*/
+/*Color for text of items on Nav Bar */
+.dropdown-menu {
+  background-color: whitesmoke;
+}
+/*For gap on drop-down-menu */
+.navbar-nav > li > .dropdown-menu {
+  margin-top: 5px;
+}
+/*Color for algorithms in drop-down */
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: rgb(66 134 244);
+}
+.btn {
+  margin-top: 9px;
+}
+/*......................Start.................*/
+/*For removing red-color around  the button */
+.btn:focus,
+.btn:active:focus {
+  outline: none;
+}
+/*......................Ends.................*/
 table {
   border-collapse: separate;
   table-layout: fixed;
@@ -13,14 +73,8 @@ table {
 td {
   border: 1px solid #2980b9;
   height: 26px;
-  width: auto;
+  width: 26px;
   padding: 0px;
-}
-.header_box {
-  display: flex;
-  height: 100px;
-  justify-content: space-around;
-  align-items: center;
 }
 .drawTheShortestPath {
   animation-name: drawTheShortestPath;
@@ -93,7 +147,7 @@ td {
   }
 }
 .startFlag {
-  font-size: 23px;
+  font-size: 19px;
   color: red;
   cursor: default;
   animation-name: rotateAnim;
@@ -105,7 +159,7 @@ td {
   animation-play-state: running;
 }
 .finishFlag {
-  font-size: 23px;
+  font-size: 19px;
   color: green;
   cursor: default;
   animation-name: rotateAnim;

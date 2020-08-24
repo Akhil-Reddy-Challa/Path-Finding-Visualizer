@@ -1,63 +1,86 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <script>
-      function allowDrop(ev) {
-        ev.preventDefault();
-      }
-
-      function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
-      }
-      function drop(ev) {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-      }
-    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <table>
-      <tr>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)">
-          <div class="material-icons">place</div>
-        </td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-      </tr>
-      <tr>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)">
-          <div
-            id="drag1"
-            ondragstart="drag(event)"
-            class="startNode"
-            draggable="true"
-          ></div>
-        </td>
-        <td class="startNode"></td>
-      </tr>
-      <tr>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)"></td>
-        <td ondrop="drop(event)" ondragover="allowDrop(event)">
-          <div
-            id="drag2"
-            ondragstart="drag(event)"
-            class="finishNode"
-            draggable="true"
-          ></div>
-        </td>
-      </tr>
-    </table>
-    <!-- <div class="wall">DIV-BOX</div> -->
-    <div class="rippleBox"></div>
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Path Finding Visualizer</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#" class="buttons">Clear-Board!</a></li>
+          <li class="active"><a href="#" class="buttons">Clear-Path!</a></li>
+          <li class="active">
+            <a href="#" class="buttons">Traverse Board(L->R)!</a>
+          </li>
+          <li class="active">
+            <a href="#" class="buttons">Traverse Board(T->D)!</a>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+              >Algorithms! <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">BFS</a></li>
+              <li><a href="#">DFS</a></li>
+              <li><a href="#">Dijkstra's</a></li>
+              <li><a href="#">A*</a></li>
+            </ul>
+          </li>
+          <button id="visualizeButton" type="button" class="btn">
+            Visualize
+          </button>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <table>
+        <tr>
+          <td>
+            <div class="material-icons">place</div>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      <!-- <div class="wall">DIV-BOX</div> -->
+      <div class="rippleBox"></div>
+    </div>
   </body>
 </html>
 <!-- 

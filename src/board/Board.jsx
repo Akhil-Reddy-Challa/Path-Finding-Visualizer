@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./cssFiles/bootstrap.min.css";
 import "./cssFiles/css_for_board.css";
 import { createBoard } from "../logicFiles/getDimensions.js";
 import { pathFinder } from "../logicFiles/buildGraph";
@@ -304,21 +305,89 @@ class Board extends Component {
   render() {
     return (
       <div>
-        <div className="header_box">
-          <p>Path-Finding Visualizer</p>
-          <button onClick={() => this.clearTheBoard()}>Clear-Board!</button>
-          <button onClick={() => this.clearThePath()}>ClearPath!</button>
-          <button onClick={() => this.traverseBoardFromLeftToRight()}>
-            Traverse Board(L->R)!
-          </button>
-          <button onClick={() => this.traverseBoardFromTopToBottom()}>
-            Traverse Board(T->D)!
-          </button>
-          <button onClick={() => this.DFSTraversal()}>DFS</button>
-          <button onClick={() => this.BFSTraversal()}>BFS</button>
-          <button onClick={() => this.DijkstrasTraversal()}>Dijkstra's</button>
-        </div>
-        <div className="container">
+        <nav className="navbar">
+          <div className="container-fluid">
+            <div className="navbar-header">
+              <a className="navbar-brand" href="#">
+                Path Finding Visualizer
+              </a>
+            </div>
+            <ul className="nav navbar-nav">
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => this.clearTheBoard()}
+                  className="buttons"
+                >
+                  Clear-Board!
+                </a>
+              </li>
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => this.clearThePath()}
+                  className="buttons"
+                >
+                  Clear-Path!
+                </a>
+              </li>
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => this.traverseBoardFromLeftToRight()}
+                  className="buttons"
+                >
+                  Traverse Board(L->R)!
+                </a>
+              </li>
+              <li className="active">
+                <a
+                  href="#"
+                  onClick={() => this.traverseBoardFromTopToBottom()}
+                  className="buttons"
+                >
+                  Traverse Board(T->D)!
+                </a>
+              </li>
+              <li>
+                <button
+                  id="visualizeButton"
+                  type="button"
+                  className="btn"
+                  text="asa"
+                >
+                  Visualize
+                </button>
+              </li>
+              <li className="dropdown">
+                <a className="dropdown-toggle" data-toggle="dropdown" href="#">
+                  Algorithms! <span className="caret"></span>
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="#" onClick={() => this.BFSTraversal()}>
+                      BFS
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={() => this.DFSTraversal()}>
+                      DFS
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" onClick={() => this.DijkstrasTraversal()}>
+                      Dijkstra's
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">A*(Developing)</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div className="graphContainer">
           <table>
             <tbody>
               {grid_array.map((row, row_number) => (

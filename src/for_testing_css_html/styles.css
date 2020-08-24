@@ -1,11 +1,76 @@
+* {
+  font-family: "Montserrat", sans-serif;
+}
+.container {
+  width: 100%;
+  white-space: nowrap;
+}
+.navbar {
+  border-radius: 0;
+  background-color: #4286f4 !important;
+}
+/*Below is for Title-TEXT on Nav bar*/
+/*........................Starts.............*/
+.navbar-brand {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+}
+.navbar > .container-fluid .navbar-brand {
+  margin-left: 2px; /*For the Title left margin*/
+}
+/*......................Ends.................*/
+/*Below is for buttons on Nav bar*/
+/*........................Starts.............*/
+.nav > li > a {
+  color: white;
+  text-decoration: none !important;
+  background-color: transparent !important;
+}
+.nav > li > a:hover {
+  transition: color 0.3s ease 0s;
+  background-color: transparent !important;
+  color: rgb(17, 223, 17);
+}
+.nav > li > a:active {
+  transition: color 0.3s ease 0s;
+  background-color: transparent !important;
+  color: white;
+}
+/*......................Ends.................*/
+/*Color for text of items on Nav Bar */
+.dropdown-menu {
+  background-color: whitesmoke;
+}
+/*For gap on drop-down-menu */
+.navbar-nav > li > .dropdown-menu {
+  margin-top: 5px;
+}
+/*Color for algorithms in drop-down */
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: rgb(66 134 244);
+}
+.btn {
+  margin-top: 9px;
+}
+/*......................Start.................*/
+/*For removing red-color around  the button */
+.btn:focus,
+.btn:active:focus {
+  outline: none;
+}
+/*......................Ends.................*/
 table {
-  border-collapse: collapse;
-  /* table-layout: fixed; */
+  table-layout: fixed;
+  width: 100%;
 }
 td {
   border: 1px solid #2980b9;
   height: 26px;
   width: 26px;
+  padding: 0px;
 }
 .wall {
   height: 100px;
