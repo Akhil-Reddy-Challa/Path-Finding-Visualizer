@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./cssFiles/bootstrap.min.css";
 import "./cssFiles/css_for_board.css";
-import { createBoard } from "../logicFiles/getDimensions.js";
-import { pathFinder } from "../logicFiles/buildGraph";
+import { createBoard } from "../algorithms/getDimensions.js";
+import { Algorithms } from "../algorithms/traversalAlgorithms/algorithmCaller";
 
 class Board extends Component {
   constructor() {
@@ -168,11 +168,11 @@ class Board extends Component {
     //Before Traversing, clear the path travelled by any of our algorithm
     //Ex: If BFS was visualized first, and then DFS was clicked then the path would mess-up, hence clear the board
     this.clearThePath();
-    let { path, shortest_path_to_Target } = pathFinder(
+    let { path, shortest_path_to_Target } = Algorithms(
       grid_array,
       startFlag,
       finishFlag,
-      "dfs"
+      0
     );
     //console.log("DFS Returned path: ", path);
     var timer = 1;
@@ -208,11 +208,11 @@ class Board extends Component {
     //Before Traversing, clear the path travelled by any of our algorithm
     //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
     this.clearThePath();
-    let { path, shortest_path_to_Target } = pathFinder(
+    let { path, shortest_path_to_Target } = Algorithms(
       grid_array,
       startFlag,
       finishFlag,
-      "bfs"
+      1
     );
     var timer = 1;
     //This will draw the path/depth covered by our BFS
@@ -246,11 +246,11 @@ class Board extends Component {
     //Before Traversing, clear the path travelled by any of our algorithm
     //Ex: If BFS was visualized first, and then Dijkstra was clicked then the path would mess-up, hence clear the path_on the board
     this.clearThePath();
-    let { path, shortest_path_to_Target } = pathFinder(
+    let { path, shortest_path_to_Target } = Algorithms(
       grid_array,
       startFlag,
       finishFlag,
-      "dijkstras"
+      2
     );
     var timer = 1;
     //This will draw the path/depth covered by our BFS
@@ -280,6 +280,7 @@ class Board extends Component {
       );
     }
   };
+
   areEqual = (arr1, arr2) => {
     return arr1[0] === arr2[0] && arr1[1] === arr2[1];
   };

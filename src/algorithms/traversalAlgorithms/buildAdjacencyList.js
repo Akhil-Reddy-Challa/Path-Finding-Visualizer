@@ -1,4 +1,7 @@
-export function buildAdjacencyList(grid, r, c) {
+export function buildAdjacencyList(grid) {
+  let r, c;
+  r = grid.length; //Rows
+  c = grid[0].length; //Columns
   let adjacency_list = new Map();
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
