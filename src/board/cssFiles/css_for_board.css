@@ -2,6 +2,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 * {
   font-family: "Montserrat", sans-serif;
+  font-weight: bold;
 }
 .graphContainer {
   width: 100%;
@@ -20,6 +21,7 @@
 }
 .navbar > .container-fluid .navbar-brand {
   margin-left: 2px; /*For the Title left margin*/
+  cursor: pointer;
 }
 /*......................Ends.................*/
 /*Below is for buttons on Nav bar*/
@@ -33,6 +35,7 @@
   transition: color 0.3s ease 0s;
   background-color: transparent !important;
   color: rgb(17, 223, 17);
+  cursor: pointer;
 }
 .nav > li > a:active {
   transition: color 0.3s ease 0s;
@@ -63,6 +66,46 @@
 .btn:focus,
 .btn:active:focus {
   outline: none;
+}
+/*When no algorithm is selected button should shake*/
+.visualizeButtonShake {
+  animation: shake 0.5s;
+  animation-iteration-count: 1;
+}
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
 }
 /*......................Ends.................*/
 table {
@@ -147,7 +190,7 @@ td {
   }
 }
 .startFlag {
-  font-size: 19px;
+  font-size: 21px;
   color: red;
   cursor: default;
   animation-name: rotateAnim;
@@ -159,7 +202,7 @@ td {
   animation-play-state: running;
 }
 .finishFlag {
-  font-size: 19px;
+  font-size: 21px;
   color: green;
   cursor: default;
   animation-name: rotateAnim;

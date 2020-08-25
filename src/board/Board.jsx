@@ -114,6 +114,56 @@ class Board extends Component {
       }
     }
   };
+  startVisualization = () => {
+    //Responsible for calling the algorithms
+    /**
+     *
+     * -1 == None selected(Shakes the button)
+     * 0 == DFS
+     * 1 == BFS
+     * 2 == Dijkstra's
+     * 3 == A*
+     */
+    var button = document.getElementById("visualizeButton");
+    if (user_selected_algorithm === -1) {
+      //Change the text on button
+      button.textContent = "Pick an algorithm";
+      //Add shake class to our button
+      button.setAttribute("class", "btn visualizeButtonShake");
+      //Now remove the class shake from the button
+      setTimeout(() => {
+        button.setAttribute("class", "btn");
+      }, 500);
+    } else if (user_selected_algorithm === 0) {
+      this.BFSTraversal();
+    } else if (user_selected_algorithm === 1) {
+      this.DFSTraversal();
+    } else if (user_selected_algorithm === 2) {
+      this.DijkstrasTraversal();
+    } else {
+      console.log("Under development");
+    }
+  };
+  selectAlgorithm = (algorithm) => {
+    //Now user selected an algorithm
+    //1) Update the visualize button's text
+    /**
+     *
+     * -1 == None selected(Shakes the button)
+     * 0 == DFS
+     * 1 == BFS
+     * 2 == Dijkstra's
+     * 3 == A*
+     */
+    //-1 is not possible because, only algos in drop-down can call this method
+    user_selected_algorithm = algorithm;
+    //Now update the text of the button
+    let button = document.getElementById("visualizeButton");
+    if (algorithm === 0) button.textContent = "Visualize(BFS)";
+    else if (algorithm === 1) button.textContent = "Visualize(DFS)";
+    else if (algorithm === 2) button.textContent = "Visualize(Dijkstra's)";
+    else button.textContent = "Visualize(A*)";
+  };
   DFSTraversal = () => {
     //Before Traversing, clear the path travelled by any of our algorithm
     //Ex: If BFS was visualized first, and then DFS was clicked then the path would mess-up, hence clear the board
@@ -308,79 +358,73 @@ class Board extends Component {
         <nav className="navbar">
           <div className="container-fluid">
             <div className="navbar-header">
-              <a className="navbar-brand" href="#">
+              <a
+                className="navbar-brand"
+                onClick={() => window.location.reload()}
+              >
                 Path Finding Visualizer
               </a>
             </div>
             <ul className="nav navbar-nav">
               <li className="active">
-                <a
-                  href="#"
-                  onClick={() => this.clearTheBoard()}
-                  className="buttons"
-                >
-                  Clear-Board!
-                </a>
+                <a onClick={() => this.clearTheBoard()}>Clear-Board!</a>
               </li>
               <li className="active">
-                <a
-                  href="#"
-                  onClick={() => this.clearThePath()}
-                  className="buttons"
-                >
-                  Clear-Path!
-                </a>
+                <a onClick={() => this.clearThePath()}>Clear-Path!</a>
               </li>
-              <li className="active">
+              {/* <li className="active">
                 <a
-                  href="#"
+                  href="/#"
                   onClick={() => this.traverseBoardFromLeftToRight()}
                   className="buttons"
                 >
                   Traverse Board(L->R)!
                 </a>
-              </li>
-              <li className="active">
+              </li> */}
+              {/* <li className="active">
                 <a
-                  href="#"
+                  href="/#"
                   onClick={() => this.traverseBoardFromTopToBottom()}
                   className="buttons"
                 >
                   Traverse Board(T->D)!
                 </a>
-              </li>
+              </li> */}
               <li>
                 <button
                   id="visualizeButton"
                   type="button"
                   className="btn"
-                  text="asa"
+                  onClick={() => this.startVisualization()}
+                  refs="button"
                 >
                   Visualize
                 </button>
               </li>
               <li className="dropdown">
-                <a className="dropdown-toggle" data-toggle="dropdown" href="#">
+                <a className="dropdown-toggle" data-toggle="dropdown" href="/#">
                   Algorithms! <span className="caret"></span>
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a href="#" onClick={() => this.BFSTraversal()}>
+                    <a href="/#" onClick={() => this.selectAlgorithm(0)}>
                       BFS
                     </a>
                   </li>
                   <li>
-                    <a href="#" onClick={() => this.DFSTraversal()}>
+                    <a href="/#" onClick={() => this.selectAlgorithm(1)}>
                       DFS
                     </a>
                   </li>
                   <li>
-                    <a href="#" onClick={() => this.DijkstrasTraversal()}>
+                    <a href="/#" onClick={() => this.selectAlgorithm(2)}>
                       Dijkstra's
                     </a>
                   </li>
                   <li>
-                    <a href="#">A*(Developing)</a>
+                    <a href="/#" onClick={() => this.selectAlgorithm(3)}>
+                      A*(Developing)
+                    </a>
                   </li>
                 </ul>
               </li>
@@ -428,3 +472,4 @@ let startFlag = [0, 0];
 let finishFlag = [3, 3];
 const { grid_array, rows_count, columns_count } = createBoard();
 let startFlagDragged = true;
+let user_selected_algorithm = -1;
