@@ -124,8 +124,8 @@ class Board extends Component {
      * 2 == Dijkstra's
      * 3 == A*
      */
-    var button = document.getElementById("visualizeButton");
     if (user_selected_algorithm === -1) {
+      var button = document.getElementById("visualizeButton");
       //Change the text on button
       button.textContent = "Pick an algorithm";
       //Add shake class to our button
@@ -134,14 +134,50 @@ class Board extends Component {
       setTimeout(() => {
         button.setAttribute("class", "btn");
       }, 500);
-    } else if (user_selected_algorithm === 0) {
-      this.BFSTraversal();
-    } else if (user_selected_algorithm === 1) {
-      this.DFSTraversal();
-    } else if (user_selected_algorithm === 2) {
-      this.DijkstrasTraversal();
-    } else {
-      console.log("Under development");
+      return; //Stops this method
+    }
+    //Now we have to call our Algorithms
+    let { path, shortest_path_to_Target } = Algorithms(
+      grid_array,
+      startFlag,
+      finishFlag,
+      user_selected_algorithm /*Responsible for calling the correct algorithm */
+    );
+    //Now draw our Graph
+    this.drawGraph(path, shortest_path_to_Target);
+  };
+  drawGraph = (p, sp) => {
+    //Before drawing, clear the path travelled by any of our algorithm
+    //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
+    this.clearThePath();
+    // p == path
+    // sp == shortest_path_to_target
+    var timer = 1;
+    //This will draw the path/depth covered by our Algo
+    for (let node of p) {
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      if (!this.areEqual(finishFlag, node))
+        setTimeout(
+          () =>
+            document
+              .getElementById([i, j])
+              .setAttribute("class", "drawDistanceTravelled"),
+          timer++ * 10
+        );
+    }
+    //This will draw the shortest_path if it exists.
+    for (let k = sp.length - 1; k > -1; k--) {
+      let node = sp[k];
+      let i = Math.floor((node - 1) / columns_count);
+      let j = node - (i * columns_count + 1);
+      setTimeout(
+        () =>
+          document
+            .getElementById([i, j])
+            .setAttribute("class", "drawTheShortestPath"),
+        timer++ * 13
+      );
     }
   };
   selectAlgorithm = (algorithm) => {
@@ -164,123 +200,6 @@ class Board extends Component {
     else if (algorithm === 2) button.textContent = "Visualize(Dijkstra's)";
     else button.textContent = "Visualize(A*)";
   };
-  DFSTraversal = () => {
-    //Before Traversing, clear the path travelled by any of our algorithm
-    //Ex: If BFS was visualized first, and then DFS was clicked then the path would mess-up, hence clear the board
-    this.clearThePath();
-    let { path, shortest_path_to_Target } = Algorithms(
-      grid_array,
-      startFlag,
-      finishFlag,
-      0
-    );
-    //console.log("DFS Returned path: ", path);
-    var timer = 1;
-    //This will draw the path/depth covered by our DFS
-    for (let node of path) {
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      if (!this.areEqual(finishFlag, node))
-        setTimeout(
-          () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawDistanceTravelled"),
-          timer++ * 10
-        );
-    }
-    //DFS does not gurantee/cannot_find a shortest_path
-    //Hence the shortest path traversal would be the same
-    for (let node of shortest_path_to_Target) {
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      if (!this.areEqual(finishFlag, node))
-        setTimeout(
-          () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawTheShortestPath"),
-          timer++ * 15
-        );
-    }
-  };
-  BFSTraversal = () => {
-    //Before Traversing, clear the path travelled by any of our algorithm
-    //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
-    this.clearThePath();
-    let { path, shortest_path_to_Target } = Algorithms(
-      grid_array,
-      startFlag,
-      finishFlag,
-      1
-    );
-    var timer = 1;
-    //This will draw the path/depth covered by our BFS
-    for (let node of path) {
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      if (!this.areEqual(finishFlag, node))
-        setTimeout(
-          () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawDistanceTravelled"),
-          timer++ * 10
-        );
-    }
-    //This will draw the shortest_path if it exists.
-    for (let k = shortest_path_to_Target.length - 1; k > -1; k--) {
-      let node = shortest_path_to_Target[k];
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      setTimeout(
-        () =>
-          document
-            .getElementById([i, j])
-            .setAttribute("class", "drawTheShortestPath"),
-        timer++ * 13
-      );
-    }
-  };
-  DijkstrasTraversal = () => {
-    //Before Traversing, clear the path travelled by any of our algorithm
-    //Ex: If BFS was visualized first, and then Dijkstra was clicked then the path would mess-up, hence clear the path_on the board
-    this.clearThePath();
-    let { path, shortest_path_to_Target } = Algorithms(
-      grid_array,
-      startFlag,
-      finishFlag,
-      2
-    );
-    var timer = 1;
-    //This will draw the path/depth covered by our BFS
-    for (let node of path) {
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      if (!this.areEqual(finishFlag, node))
-        setTimeout(
-          () =>
-            document
-              .getElementById([i, j])
-              .setAttribute("class", "drawDistanceTravelled"),
-          timer++ * 10
-        );
-    }
-    //This will draw the shortest_path if it exists.
-    for (let k = shortest_path_to_Target.length - 1; k > -1; k--) {
-      let node = shortest_path_to_Target[k];
-      let i = Math.floor((node - 1) / columns_count);
-      let j = node - (i * columns_count + 1);
-      setTimeout(
-        () =>
-          document
-            .getElementById([i, j])
-            .setAttribute("class", "drawTheShortestPath"),
-        timer++ * 13
-      );
-    }
-  };
-
   areEqual = (arr1, arr2) => {
     return arr1[0] === arr2[0] && arr1[1] === arr2[1];
   };
