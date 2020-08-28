@@ -3,6 +3,7 @@ import "./cssFiles/bootstrap.min.css";
 import "./cssFiles/css_for_board.css";
 import { createBoard } from "../algorithms/getDimensions.js";
 import { Algorithms } from "../algorithms/traversalAlgorithms/algorithmCaller";
+import { MazeGenerator } from "../algorithms/mazeGenerators/algorithmCaller";
 
 class Board extends Component {
   constructor() {
@@ -70,27 +71,11 @@ class Board extends Component {
     )
       grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
   };
-  traverseBoardFromLeftToRight = () => {
-    var timer = 1;
-    for (let i = 0; i < rows_count; i++) {
-      if (i % 2 === 0) {
-        for (let j = 0; j < columns_count; j++) {
-          if (
-            !this.areEqual(startFlag, [i, j]) &&
-            !this.areEqual(finishFlag, [i, j])
-          )
-            setTimeout(() => this.createWall([i, j]), timer++ * 5);
-        }
-      } else {
-        for (let j = columns_count - 1; j >= 0; j--) {
-          if (
-            !this.areEqual(startFlag, [i, j]) &&
-            !this.areEqual(finishFlag, [i, j])
-          )
-            setTimeout(() => this.createWall([i, j]), timer++ * 5);
-        }
-      }
-    }
+  drawMaze = (maze_type) => {
+    //User selected an maze algorithm to draw
+    //Before calling an algo, clear the board
+    this.clearTheBoard();
+    MazeGenerator(grid_array, startFlag, finishFlag, maze_type);
   };
   traverseBoardFromTopToBottom = () => {
     var timer = 1;
@@ -295,21 +280,29 @@ class Board extends Component {
               {/* <li className="active">
                 <a
                   href="/#"
-                  onClick={() => this.traverseBoardFromLeftToRight()}
+                  onClick={() => this.randomMazeGenerator()}
                   className="buttons"
                 >
-                  Traverse Board(L->R)!
+                  RandomMaze
                 </a>
               </li> */}
-              {/* <li className="active">
-                <a
-                  href="/#"
-                  onClick={() => this.traverseBoardFromTopToBottom()}
-                  className="buttons"
-                >
-                  Traverse Board(T->D)!
+              <li className="dropdown">
+                <a className="dropdown-toggle" data-toggle="dropdown" href="/#">
+                  Mazes! <span className="caret"></span>
                 </a>
-              </li> */}
+                <ul className="dropdown-menu">
+                  <li>
+                    <a href="/#" onClick={() => this.drawMaze(0)}>
+                      Random Wall Maze
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/#" onClick={() => this.drawMaze(1)}>
+                      Recursive Division
+                    </a>
+                  </li>
+                </ul>
+              </li>
               <li>
                 <button
                   id="visualizeButton"
@@ -388,8 +381,9 @@ class Board extends Component {
   }
 }
 export default Board;
-let startFlag = [0, 0];
-let finishFlag = [3, 3];
+
 const { grid_array, rows_count, columns_count } = createBoard();
+let startFlag = [Math.floor(rows_count / 2), Math.floor(columns_count / 2)];
+let finishFlag = [rows_count - 1, columns_count - 1];
 let startFlagDragged = true;
 let user_selected_algorithm = -1;
