@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import "./cssFiles/bootstrap.min.css";
-import "./cssFiles/css_for_board.css";
 import { createBoard } from "../algorithms/getDimensions.js";
 import { Algorithms } from "../algorithms/traversalAlgorithms/algorithmCaller";
 import { MazeGenerator } from "../algorithms/mazeGenerators/algorithmCaller";
@@ -76,28 +74,6 @@ class Board extends Component {
     //Before calling an algo, clear the board
     this.clearTheBoard();
     MazeGenerator(grid_array, startFlag, finishFlag, maze_type);
-  };
-  traverseBoardFromTopToBottom = () => {
-    var timer = 1;
-    for (let i = 0; i < columns_count; i++) {
-      if (i % 2 === 0) {
-        for (let j = 0; j < rows_count; j++) {
-          if (
-            !this.areEqual(startFlag, [j, i]) &&
-            !this.areEqual(finishFlag, [j, i])
-          )
-            setTimeout(() => this.createWall([j, i]), timer++ * 10);
-        }
-      } else {
-        for (let j = rows_count - 1; j >= 0; j--) {
-          if (
-            !this.areEqual(startFlag, [j, i]) &&
-            !this.areEqual(finishFlag, [j, i])
-          )
-            setTimeout(() => this.createWall([j, i]), timer++ * 10);
-        }
-      }
-    }
   };
   startVisualization = () => {
     //Responsible for calling the algorithms
@@ -277,15 +253,6 @@ class Board extends Component {
               <li className="active">
                 <a onClick={() => this.clearThePath()}>Clear-Path!</a>
               </li>
-              {/* <li className="active">
-                <a
-                  href="/#"
-                  onClick={() => this.randomMazeGenerator()}
-                  className="buttons"
-                >
-                  RandomMaze
-                </a>
-              </li> */}
               <li className="dropdown">
                 <a className="dropdown-toggle" data-toggle="dropdown" href="/#">
                   Mazes! <span className="caret"></span>
