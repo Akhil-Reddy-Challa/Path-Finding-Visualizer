@@ -1,3 +1,6 @@
+/*
+This is a working version of Astar, it includes console.log statements which are very useful for debugging
+ */
 import Heap from "./HeapProgram/Heap";
 let number_of_rows = 0;
 let number_of_columns = 0;
