@@ -109,7 +109,7 @@
 }
 /*......................Ends.................*/
 table {
-  border-collapse: separate;
+  border-collapse: separate; /*Responsible for creating space between each table cell, change the prop to collapse to see the effect*/
   table-layout: fixed;
   width: 100%;
 }
@@ -175,7 +175,7 @@ td {
   animation-fill-mode: forwards;
 }
 .wallBoxNoAnimation {
-  /*When building mazes we dont want the animation*/
+  /* When building mazes we dont want the animation*/
   padding: 0px;
   background-color: #2c3e50;
 }
