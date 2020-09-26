@@ -167,27 +167,26 @@ class Board extends Component {
     return arr1[0] === arr2[0] && arr1[1] === arr2[1];
   };
   componentDidMount() {
-    //console.log("Component mounted,deploying start & end Flags");
-    this.createNewStartFlag("startFlag", startFlag);
-    this.createNewFinishFlag("finishFlag", finishFlag);
+    //Component mounted,deploying start & end Flags
+    this.createNewFlag("startFlag");
+    this.createNewFlag("finishFlag");
   }
-  createNewStartFlag = (className, position) => {
-    const div = document.createElement("div");
-    div.className = "material-icons " + className;
+  createNewFlag = (flagType) => {
+    //flagType = Tells us the type of Flag to create
+    //position = coordinates
+
+    var div = document.createElement("div"); //Creates a new DIV html element
+    div.className = "material-icons " + flagType;
     div.innerHTML = "place"; //This will give us location_marker Icon
-    div.setAttribute("draggable", "true"); //So it can be dragged along
-    div.id = className; //This should be done, it will assist us during deleting Flag
-    document.getElementById(position).appendChild(div);
-    grid_array[startFlag[0]][startFlag[1]] = 2; //Useful to identify during traversal
-  };
-  createNewFinishFlag = (className, position) => {
-    const div = document.createElement("div");
-    div.className = "material-icons " + className;
-    div.innerHTML = "place"; //This will give us location_marker Icon
-    div.id = className;
-    div.setAttribute("draggable", "true"); //So it can be dragged along
-    document.getElementById(position).appendChild(div);
-    grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
+    div.setAttribute("draggable", "true"); //This allows the Icon to be draggable
+    div.id = flagType; //It will assist us during deletion of the Flag
+    if (flagType === "startFlag") {
+      document.getElementById(startFlag).appendChild(div);
+      grid_array[startFlag[0]][startFlag[1]] = 2; //Useful to identify during traversal
+    } else {
+      document.getElementById(finishFlag).appendChild(div);
+      grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
+    }
   };
   onDragStart = (ev, element) => {
     //console.log("drag Started for", element);
@@ -230,8 +229,8 @@ class Board extends Component {
       finishFlag = new_position;
     }
     /*All set till now, but their is a caveat: */
-    //If our NEW dropping place is a Wall already
-    //For this case we need to destry the Wall
+    //If our NEW dropping place is a WALL
+    //In that case we need to destroy the Wall
     if (grid_array[new_position[0]][new_position[1]] === 1)
       this.removeWall(new_position);
   };
