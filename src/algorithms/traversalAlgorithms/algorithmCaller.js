@@ -1,8 +1,8 @@
-import { DFS } from "./DFSAlgorithm";
-import { BFS } from "./BFSAlgorithm";
-import { Dijkstra } from "./DijkstrasAlgorithm";
-import { Astar } from "./A_StarAlgorithm";
-import { buildAdjacencyList } from "./buildAdjacencyList";
+import { DFS } from "./DFS/DFS";
+import { BFS } from "./BFS/BFS";
+import { Dijkstra } from "./Dijkstras/Dijkstras";
+import { Astar } from "./AStar/A_StarAlgorithm";
+import { buildAdjacencyList } from "./AdjacenyListBuilder/buildAdjacencyList";
 export function Algorithms(grid_arr, startNode, targetNode, algorithmNumber) {
   //Before calling our algorithms, generate a AdjacencyList & pass it as a parameter
   let adjacency_List = buildAdjacencyList(grid_arr);
