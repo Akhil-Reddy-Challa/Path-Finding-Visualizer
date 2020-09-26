@@ -1,4 +1,4 @@
-import { getPathandShortestPath } from "./A_Star_Helper";
+import { getPathandShortestPath } from "./AStar_Helper";
 export function AStar(grid, startNode, targetNode) {
   let { path, shortest_path_to_Target } = getPathandShortestPath(
     grid,

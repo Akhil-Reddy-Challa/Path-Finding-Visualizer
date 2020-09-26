@@ -6,9 +6,10 @@ let shortest_path_to_Target = []; //Use for storing shortest_path_to_target
 export function getPathandShortestPath(grid, startNode, targetNode) {
   number_of_rows = grid.length;
   number_of_columns = grid[0].length;
-  path = []; //JS has a wierd behaviour, it is not allocating new memory position for this variable everytime this algo is called
-  //Hence assign it to an empty array
+  path = [startNode]; //JS has an erratic behaviour, it will not allocate new memory position for variable everytime this algo is called
+  //Hence assign it to an empty array or array with startNode
   shortest_path_to_Target = [];
+
   findPath(grid, startNode, targetNode);
   return { path, shortest_path_to_Target };
 }

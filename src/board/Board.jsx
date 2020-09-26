@@ -305,7 +305,7 @@ class Board extends Component {
                   </li>
                   <li>
                     <a href="/#" onClick={() => this.selectAlgorithm(3)}>
-                      A*(Developing)
+                      A-Star
                     </a>
                   </li>
                 </ul>
