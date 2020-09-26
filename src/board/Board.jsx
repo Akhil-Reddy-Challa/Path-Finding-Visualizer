@@ -98,24 +98,26 @@ class Board extends Component {
       return; //Stops this method
     }
     //Now we have to call our Algorithms
+    //Before calling our algo clear the path travelled by any of our algorithm
+    //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
+    this.clearThePath();
     let { path, shortest_path_to_Target } = Algorithms(
       grid_array,
       startFlag,
       finishFlag,
       user_selected_algorithm /*Responsible for calling the correct algorithm */
     );
-    //Now draw our Graph
-    this.drawGraph(path, shortest_path_to_Target);
+    if (user_selected_algorithm !== 3)
+      this.drawGraph(path, shortest_path_to_Target);
+    //Astar algo takes care of drawing the board
   };
   drawGraph = (p, sp) => {
-    //Before drawing, clear the path travelled by any of our algorithm
-    //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
-    this.clearThePath();
     // p == path
     // sp == shortest_path_to_target
     var timer = 1;
     //This will draw the path/depth covered by our Algo
-    for (let node of p) {
+    for (let cnt = 0; cnt < p.length; cnt++) {
+      let node = p[cnt];
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
       if (!this.areEqual(finishFlag, node))
@@ -128,7 +130,7 @@ class Board extends Component {
         );
     }
     //This will draw the shortest_path if it exists.
-    for (let k = sp.length - 1; k > -1; k--) {
+    for (let k = 0; k < sp.length; k++) {
       let node = sp[k];
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
