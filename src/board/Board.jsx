@@ -16,6 +16,9 @@ class Board extends Component {
         this.removeWall([i, j]);
       }
     }
+    //At some point removeWall will change the flags grid_value to 0, so change them accordingly
+    grid_array[startFlag[0]][startFlag[1]] = 2;
+    grid_array[finishFlag[0]][finishFlag[1]] = 3;
   };
   clearThePath = () => {
     for (let i = 0; i < rows_count; i++) {
@@ -26,8 +29,8 @@ class Board extends Component {
     }
   };
   mouseButtonClicked = (node) => {
-    if (this.areEqual(startFlag, node)) return;
-    else if (this.areEqual(finishFlag, node)) return;
+    if (this.areEqual(startFlag, node) || this.areEqual(finishFlag, node))
+      return; //User should not deploy wall on the flags
     let p_x = node[0]; //position_x
     let p_y = node[1]; //position_y
     //console.log("im clicked", node);
@@ -35,9 +38,7 @@ class Board extends Component {
     if (grid_array[p_x][p_y] === 1) {
       //Already Colored
       this.removeWall(node);
-    } else if (grid_array[p_x][p_y] === 0) {
-      this.createWall(node);
-    }
+    } else this.createWall(node);
   };
   mouseBtnReleased = () => {
     this.setState({ mouseButtonPressed: false });
@@ -58,19 +59,20 @@ class Board extends Component {
     grid_array[coordinates[0]][coordinates[1]] = 1;
   };
   removeWall = (coordinates) => {
+    /* This method will not disturb the flags because they have nested DIV classes
+    Example: WALL = <td id="16,33" class="wallBox"></td>
+    Flag = <td id="16,34"><div class="material-icons startFlag" draggable="true" id="startFlag">place</div></td>
+    Below removeAttribute method only deletes the given element's class, not nested div's class
+    */
     document.getElementById(coordinates).removeAttribute("class"); //Makes the node blank by deleting the class assigned
     //Above works for all i.e(Wall,path_travelled by algorithm,shortest_path by algos)
 
-    //Caveat : Below statement(grid_arr[i][j]=0) makes our start_flag and end_flag zero's
-    //Hence adding conditional statement
-    if (
-      !this.areEqual(startFlag, coordinates) &&
-      !this.areEqual(finishFlag, coordinates)
-    )
-      grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
+    grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
+    //Caveat : Above statement(grid_arr[i][j]=0) at some point makes our start_flag and end_flag zero's
+    //Hence we handle this in clearTheBoard method ending
   };
   drawMaze = (maze_type) => {
-    //User selected an maze algorithm to draw
+    //User selected a maze algorithm to draw
     //Before calling an algo, clear the board
     this.clearTheBoard();
     MazeGenerator(grid_array, startFlag, finishFlag, maze_type);
