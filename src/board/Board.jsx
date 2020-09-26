@@ -139,7 +139,7 @@ class Board extends Component {
           document
             .getElementById([i, j])
             .setAttribute("class", "drawTheShortestPath"),
-        timer++ * 13
+        timer++ * 15
       );
     }
   };
