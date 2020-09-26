@@ -27,7 +27,7 @@ function findPathUsingDFS(start, destination, path_storage, visited) {
     //In the below code(for-statement), we use visited[destination]{This will stop our method from recursing after the path is found}
     visited[destination] = true;
     path = path_storage;
-    shortest_path_to_Target = path; //We use this because, we dont want our program to draw shortest_path_if the targetNode is not reachable
+    shortest_path_to_Target = path; //We use this because, we dont want our program to draw shortest path if the targetNode is not reachable
     return;
   }
   visited[start] = true;
@@ -40,5 +40,6 @@ function findPathUsingDFS(start, destination, path_storage, visited) {
       findPathUsingDFS(connection, destination, path_storage, visited);
     }
   }
+
   path = path_storage;
 }

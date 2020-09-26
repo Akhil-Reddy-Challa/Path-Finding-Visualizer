@@ -21,11 +21,12 @@ function BFS_Traversal(start, targetNode) {
   let predecessor_array = [];
   /*
   predecessor_array stores all the previous nodes of current node
-  example: 0-1-3
+  example: 0->1->3
   For the above graph
   pred_array = [-1,0,1]
   It stores the node from which it can be reached
   */
+  //Init the  visited & pred_arr arrays
   for (let i = 0; i < number_of_columns * number_of_rows; i++) {
     visited.push(false);
     predecessor_array.push(-1);
@@ -45,13 +46,15 @@ function BFS_Traversal(start, targetNode) {
     }
   }
   //Now assign the shortest_path, if it was calculated
-  shortest_path_to_Target = shortest_path;
+  //Before returning, reverse the array values
+  //Because we trace our path from target to start, the order would be backwards
+  shortest_path_to_Target = shortest_path.reverse();
 }
 function findPathUsingBFS(start, targetNode, visited, predecessor_storage) {
   let queue = [start];
   let nodes_travelled = []; //Stores the list_of_all_the_nodes_travelled
   while (queue.length !== 0) {
-    let node = queue.shift();
+    let node = queue.shift(); //Pop's and returns the 1st most element
     //console.log("s,e", node, targetNode, queue);
     visited[node] = true; //Mark as visited
     nodes_travelled.push(node);

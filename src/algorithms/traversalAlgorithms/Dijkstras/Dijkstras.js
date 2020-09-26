@@ -23,25 +23,28 @@ function dijkstraAlgorithm(startNode, targetNode) {
    *To find the path traversed we should use BFS
    So this function is split into 2 parts
    */
+
   //----------------------------------------1st part Begins------------------------------------//
   let distance = []; // For storing shortest distance to reach all nodes from source
   let visited = [];
   let predecessor_storage = []; //Useful for computing shortest_path
   let total = number_of_columns * number_of_rows;
 
-  visited = new Array(total).fill(false);
-  predecessor_storage = new Array(total).fill(-1);
+  visited = new Array(total).fill(false); //Mark all the nodes as unvisited
+  predecessor_storage = new Array(total).fill(-1); //Make all the nodes as unreachable i.e -1
   BFS_Traversal(startNode, targetNode, visited, predecessor_storage);
   //We have obtained the distance travelled to reach TargetNode using BFS
   //----------------------------------------1st part ENDS ------------------------------------//
-  //Now re-initialize the arrays(visited,pred_array)
+
+  //Now re-initialize the arrays(visited,pred_storage)
   visited = new Array(total + 1).fill(false); //total+1 because our start node == 1
-  distance = new Array(total + 1).fill(Number.MAX_SAFE_INTEGER);
+  distance = new Array(total + 1).fill(Number.MAX_SAFE_INTEGER); //Dijkstra assumes the distance from start to ALL the nodes as INFIFNITE intitally
   predecessor_storage = new Array(total + 1).fill(-1);
+
   //----------------------------------------2nd Part Begins------------------------------------//
   findShortestPathDijkstra(startNode, distance, visited, predecessor_storage);
-  //Now we have our distance and pred_array filled
-  //1) Check if we have a route to our target Node, i.e: If the targetNode is MAX_INT then there is no path from start to target
+  //Now we have our distance and pred_storage filled
+  //1) Check if we have a route to our target Node, i.e: If the targetNode is MAX_SAFE_INTEGER then there is no path from start to target
   if (distance[targetNode] !== Number.MAX_SAFE_INTEGER) {
     //Path exists
     //Now extract the shortest_Path
@@ -49,17 +52,20 @@ function dijkstraAlgorithm(startNode, targetNode) {
     let shortest_path = [];
     shortest_path.push(node);
     while (node !== startNode && predecessor_storage[node] !== -1) {
-      //We should stop when we encounter our start Node, hence (node!==start)
+      //We should stop when we encounter our start Node, hence we include (node!==start) in the above if condition
       shortest_path.push(predecessor_storage[node]);
       node = predecessor_storage[node];
     }
-    shortest_path_to_Target = shortest_path; //Set the global shortest_path
+    //Before setting the global shortest_path
+    //Reverse the array values
+    //Because we trace our path from target to start, the order would be backwards
+    shortest_path_to_Target = shortest_path.reverse();
   }
   //----------------------------------------2nd Part ENDS------------------------------------//
 }
 function findShortestPathDijkstra(startNode, distance, visited, pred_array) {
   let numberOfNodes = number_of_columns * number_of_rows;
-  let weight = 1; //Because we are dealing  with un-weighted graph, so the default would be 1
+  let weight = 1; //Because we are dealing with un-weighted graph, so the default would be 1
   distance[startNode] = 0; // Make distance From startNode to startNode as Zero
   // Find shortest path from source to all the remaining vertices
   for (let i = 1; i < numberOfNodes; i++) {
@@ -67,8 +73,8 @@ function findShortestPathDijkstra(startNode, distance, visited, pred_array) {
     visited[current_node] = true;
     //Now calculate distance from current_node to rest of the nodes
     if (adjacency_List.has(current_node)) {
-      //This helps to stop execution, when a wall is being iterated
-      let neighbouring_nodes = adjacency_List.get(current_node);
+      //This helps to stop execution, when a wall in our graph is encountered
+      let neighbouring_nodes = adjacency_List.get(current_node); //Get the neighbours
       for (let neighbour of neighbouring_nodes) {
         if (
           !visited[neighbour] &&
@@ -83,10 +89,11 @@ function findShortestPathDijkstra(startNode, distance, visited, pred_array) {
   }
 }
 function getNextMinimumDistance(dist, visited, numberOfNodes) {
-  let min = Number.MAX_SAFE_INTEGER,
-    min_index = -1;
+  //Responsible for getting minimum value from the array
+  let min = Number.MAX_SAFE_INTEGER;
+  let min_index = -1;
   for (let v = 0; v < numberOfNodes; v++)
-    if (visited[v] === false && dist[v] <= min) {
+    if (!visited[v] && dist[v] <= min) {
       min = dist[v];
       min_index = v;
     }
