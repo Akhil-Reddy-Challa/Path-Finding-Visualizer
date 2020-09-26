@@ -5,8 +5,10 @@
   font-weight: bold;
 }
 .graphContainer {
-  width: 100%;
+  /* width: 100%; */
   white-space: nowrap;
+  margin-right: 1px; /* When our box-coloring animation reaches edge of screen, a wiggly effect takes place due to Scroll-bar intervention*/
+  /* To avoid that we set the left margin to be 1px*/
 }
 .navbar {
   background-color: #4286f4 !important;
