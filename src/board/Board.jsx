@@ -10,6 +10,9 @@ class Board extends Component {
       mouseButtonPressed: false,
     };
   }
+  areEqual = (arr1, arr2) => {
+    return arr1[0] === arr2[0] && arr1[1] === arr2[1];
+  };
   clearTheBoard = () => {
     for (let i = 0; i < rows_count; i++) {
       for (let j = 0; j < columns_count; j++) {
@@ -26,31 +29,6 @@ class Board extends Component {
         if (grid_array[i][j] !== 1)
           document.getElementById([i, j]).removeAttribute("class"); //Only removes the path covered by our traversal algorithms
       }
-    }
-  };
-  mouseButtonClicked = (node) => {
-    if (this.areEqual(startFlag, node) || this.areEqual(finishFlag, node))
-      return; //User should not deploy wall on the flags
-    let p_x = node[0]; //position_x
-    let p_y = node[1]; //position_y
-    //console.log("im clicked", node);
-    this.setState({ mouseButtonPressed: true });
-    if (grid_array[p_x][p_y] === 1) {
-      //Already Colored
-      this.removeWall(node);
-    } else this.createWall(node);
-  };
-  mouseBtnReleased = () => {
-    this.setState({ mouseButtonPressed: false });
-  };
-  mouseHover = (node) => {
-    //console.log("hoveringgg");
-    if (!this.state.mouseButtonPressed) return;
-    if (grid_array[node[0]][node[1]] === 1) {
-      //Already Colored
-      this.removeWall(node);
-    } else if (grid_array[node[0]][node[1]] === 0) {
-      this.createWall(node);
     }
   };
   createWall = (coordinates) => {
@@ -71,11 +49,65 @@ class Board extends Component {
     //Caveat : Above statement(grid_arr[i][j]=0) at some point makes our start_flag and end_flag zero's
     //Hence we handle this in clearTheBoard method ending
   };
+  createFlag = (flagType) => {
+    //flagType = Tells us the type of Flag to create
+    //position = coordinates
+
+    var div = document.createElement("div"); //Creates a new DIV html element
+    div.className = "material-icons " + flagType;
+    div.innerHTML = "place"; //This will give us location_marker Icon
+    div.setAttribute("draggable", "true"); //This allows the Icon to be draggable
+    div.id = flagType; //It will assist us during deletion of the Flag
+    if (flagType === "startFlag") {
+      document.getElementById(startFlag).appendChild(div);
+      grid_array[startFlag[0]][startFlag[1]] = 2; //Useful to identify during traversal
+    } else {
+      document.getElementById(finishFlag).appendChild(div);
+      grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
+    }
+  };
+  deleteFlag = (typeOfFlag, new_position) => {
+    document.getElementById(typeOfFlag).remove(); //Deletes the flag
+    if (typeOfFlag === "startFlag") {
+      //Firstly make the old start_flag's grid_value==0
+      grid_array[startFlag[0]][startFlag[1]] = 0;
+      //Now assign the new_position to startFlag
+      startFlag = new_position;
+    } else {
+      grid_array[finishFlag[0]][finishFlag[1]] = 0;
+      finishFlag = new_position;
+    }
+    /*All set till now, but their is a caveat: */
+    //If our NEW dropping place is a WALL
+    //In that case we need to destroy the Wall
+    if (grid_array[new_position[0]][new_position[1]] === 1)
+      this.removeWall(new_position);
+  };
   drawMaze = (maze_type) => {
     //User selected a maze algorithm to draw
     //Before calling an algo, clear the board
     this.clearTheBoard();
     MazeGenerator(grid_array, startFlag, finishFlag, maze_type);
+  };
+  selectAlgorithm = (algorithm) => {
+    //Now user selected an algorithm
+    //1) Update the visualize button's text
+    /**
+     *
+     * -1 == None selected(Shakes the button)
+     * 0 == DFS
+     * 1 == BFS
+     * 2 == Dijkstra's
+     * 3 == A*
+     */
+    //-1 is not possible because, only algos in drop-down can call this method
+    user_selected_algorithm = algorithm;
+    //Now update the text of the button
+    let button = document.getElementById("visualizeButton");
+    if (algorithm === 0) button.textContent = "Visualize(BFS)";
+    else if (algorithm === 1) button.textContent = "Visualize(DFS)";
+    else if (algorithm === 2) button.textContent = "Visualize(Dijkstra's)";
+    else button.textContent = "Visualize(A*)";
   };
   startVisualization = () => {
     //Responsible for calling the algorithms
@@ -145,56 +177,12 @@ class Board extends Component {
       );
     }
   };
-  selectAlgorithm = (algorithm) => {
-    //Now user selected an algorithm
-    //1) Update the visualize button's text
-    /**
-     *
-     * -1 == None selected(Shakes the button)
-     * 0 == DFS
-     * 1 == BFS
-     * 2 == Dijkstra's
-     * 3 == A*
-     */
-    //-1 is not possible because, only algos in drop-down can call this method
-    user_selected_algorithm = algorithm;
-    //Now update the text of the button
-    let button = document.getElementById("visualizeButton");
-    if (algorithm === 0) button.textContent = "Visualize(BFS)";
-    else if (algorithm === 1) button.textContent = "Visualize(DFS)";
-    else if (algorithm === 2) button.textContent = "Visualize(Dijkstra's)";
-    else button.textContent = "Visualize(A*)";
-  };
-  areEqual = (arr1, arr2) => {
-    return arr1[0] === arr2[0] && arr1[1] === arr2[1];
-  };
-  componentDidMount() {
-    //Component mounted,deploying start & end Flags
-    this.createNewFlag("startFlag");
-    this.createNewFlag("finishFlag");
-  }
-  createNewFlag = (flagType) => {
-    //flagType = Tells us the type of Flag to create
-    //position = coordinates
-
-    var div = document.createElement("div"); //Creates a new DIV html element
-    div.className = "material-icons " + flagType;
-    div.innerHTML = "place"; //This will give us location_marker Icon
-    div.setAttribute("draggable", "true"); //This allows the Icon to be draggable
-    div.id = flagType; //It will assist us during deletion of the Flag
-    if (flagType === "startFlag") {
-      document.getElementById(startFlag).appendChild(div);
-      grid_array[startFlag[0]][startFlag[1]] = 2; //Useful to identify during traversal
-    } else {
-      document.getElementById(finishFlag).appendChild(div);
-      grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
-    }
-  };
   onDragStart = (ev, element) => {
-    //console.log("drag Started for", element);
+    console.log("drag Started for", element);
     if (!this.areEqual(element, startFlag)) startFlagDragged = false;
   };
-  onDragOver = (ev, m) => {
+  onDragOver = (ev) => {
+    //console.log("dragging over");
     ev.preventDefault();
   };
   onDrop = (ev, droppingPlace) => {
@@ -210,31 +198,41 @@ class Board extends Component {
     //Then create new Flag
     //console.log("dropping_place", droppingPlace);
     if (startFlagDragged) {
-      this.deleteOldFlag("startFlag", droppingPlace);
-      this.createNewStartFlag("startFlag", droppingPlace);
+      this.deleteFlag("startFlag", droppingPlace);
+      startFlag = droppingPlace;
+      this.createFlag("startFlag");
     } else {
-      this.deleteOldFlag("finishFlag", droppingPlace);
-      this.createNewFinishFlag("finishFlag", droppingPlace);
+      this.deleteFlag("finishFlag", droppingPlace);
+      finishFlag = droppingPlace;
+      this.createFlag("finishFlag");
     }
     //console.log("new_s,new_f", startFlag, finishFlag);
     startFlagDragged = true;
   };
-  deleteOldFlag = (typeOfFlag, new_position) => {
-    document.getElementById(typeOfFlag).remove(); //Deletes the flag
-    if (typeOfFlag === "startFlag") {
-      //Firstly make the old start_flag's grid_value==0
-      grid_array[startFlag[0]][startFlag[1]] = 0;
-      //Now assign the new_position to startFlag
-      startFlag = new_position;
-    } else {
-      grid_array[finishFlag[0]][finishFlag[1]] = 0;
-      finishFlag = new_position;
+  mouseButtonClicked = (node) => {
+    if (this.areEqual(startFlag, node) || this.areEqual(finishFlag, node))
+      return; //User should not deploy wall on the flags
+    let p_x = node[0]; //position_x
+    let p_y = node[1]; //position_y
+    //console.log("im clicked", node);
+    this.setState({ mouseButtonPressed: true });
+    if (grid_array[p_x][p_y] === 1) {
+      //Already Colored
+      this.removeWall(node);
+    } else this.createWall(node);
+  };
+  mouseBtnReleased = () => {
+    this.setState({ mouseButtonPressed: false });
+  };
+  mouseHover = (node) => {
+    //console.log("hoveringgg");
+    if (!this.state.mouseButtonPressed) return;
+    if (grid_array[node[0]][node[1]] === 1) {
+      //Already Colored
+      this.removeWall(node);
+    } else if (grid_array[node[0]][node[1]] === 0) {
+      this.createWall(node);
     }
-    /*All set till now, but their is a caveat: */
-    //If our NEW dropping place is a WALL
-    //In that case we need to destroy the Wall
-    if (grid_array[new_position[0]][new_position[1]] === 1)
-      this.removeWall(new_position);
   };
   render() {
     return (
@@ -349,11 +347,18 @@ class Board extends Component {
       </div>
     );
   }
+  componentDidMount() {
+    startFlag = [Math.floor(rows_count / 2), Math.floor(columns_count / 2)];
+    finishFlag = [rows_count - 1, columns_count - 1];
+    //Component mounted,deploying start & end Flags
+    this.createFlag("startFlag");
+    this.createFlag("finishFlag");
+  }
 }
 export default Board;
 
 const { grid_array, rows_count, columns_count } = createBoard();
-let startFlag = [Math.floor(rows_count / 2), Math.floor(columns_count / 2)];
-let finishFlag = [rows_count - 1, columns_count - 1];
+let startFlag;
+let finishFlag;
 let startFlagDragged = true;
 let user_selected_algorithm = -1;
