@@ -1,15 +1,10 @@
 import React, { Component } from "react";
-import { createBoard } from "../algorithms/getDimensions.js";
-import { Algorithms } from "../algorithms/traversalAlgorithms/algorithmCaller";
-import { MazeGenerator } from "../algorithms/mazeGenerators/algorithmCaller";
+import { createBoard } from "./algorithms/getDimensions.js";
+import { Algorithms } from "./algorithms/traversalAlgorithms/algorithmCaller";
+import { MazeGenerator } from "./algorithms/mazeGenerators/algorithmCaller";
+import NavBar from "./components/NavBar";
 
 class Board extends Component {
-  constructor() {
-    super();
-    this.state = {
-      mouseButtonPressed: false,
-    };
-  }
   areEqual = (arr1, arr2) => {
     return arr1[0] === arr2[0] && arr1[1] === arr2[1];
   };
@@ -19,7 +14,7 @@ class Board extends Component {
         this.removeWall([i, j]);
       }
     }
-    //At some point removeWall will change the flags grid_value to 0, so change them accordingly
+    //At some point method(removeWall) will modify the start and end flags grid_value to 0, so set them back to normal
     grid_array[startFlag[0]][startFlag[1]] = 2;
     grid_array[finishFlag[0]][finishFlag[1]] = 3;
   };
@@ -46,8 +41,6 @@ class Board extends Component {
     //Above works for all i.e(Wall,path_travelled by algorithm,shortest_path by algos)
 
     grid_array[coordinates[0]][coordinates[1]] = 0; //Sets the value to default 0
-    //Caveat : Above statement(grid_arr[i][j]=0) at some point makes our start_flag and end_flag zero's
-    //Hence we handle this in clearTheBoard method ending
   };
   createFlag = (flagType) => {
     //flagType = Tells us the type of Flag to create
@@ -66,9 +59,9 @@ class Board extends Component {
       grid_array[finishFlag[0]][finishFlag[1]] = 3; //Useful to identify during traversal
     }
   };
-  deleteFlag = (typeOfFlag, new_position) => {
-    document.getElementById(typeOfFlag).remove(); //Deletes the flag
-    if (typeOfFlag === "startFlag") {
+  deleteFlag = (flagType, new_position) => {
+    document.getElementById(flagType).remove(); //Deletes the flag
+    if (flagType === "startFlag") {
       //Firstly make the old start_flag's grid_value==0
       grid_array[startFlag[0]][startFlag[1]] = 0;
       //Now assign the new_position to startFlag
@@ -94,7 +87,7 @@ class Board extends Component {
     //1) Update the visualize button's text
     /**
      *
-     * -1 == None selected(Shakes the button)
+     * -1 == None selected(Shakes the button when user clicks the visualize btn)
      * 0 == DFS
      * 1 == BFS
      * 2 == Dijkstra's
@@ -142,8 +135,8 @@ class Board extends Component {
       user_selected_algorithm /*Responsible for calling the correct algorithm */
     );
     if (user_selected_algorithm !== 3)
+      //Astar algo takes care of drawing the board
       this.drawGraph(path, shortest_path_to_Target);
-    //Astar algo takes care of drawing the board
   };
   drawGraph = (p, sp) => {
     // p == path
@@ -178,7 +171,7 @@ class Board extends Component {
     }
   };
   onDragStart = (ev, element) => {
-    console.log("drag Started for", element);
+    //console.log("drag Started for", element);
     if (!this.areEqual(element, startFlag)) startFlagDragged = false;
   };
   onDragOver = (ev) => {
@@ -215,103 +208,35 @@ class Board extends Component {
     let p_x = node[0]; //position_x
     let p_y = node[1]; //position_y
     //console.log("im clicked", node);
-    this.setState({ mouseButtonPressed: true });
+    mouseButtonPressed = true;
     if (grid_array[p_x][p_y] === 1) {
       //Already Colored
       this.removeWall(node);
     } else this.createWall(node);
   };
   mouseBtnReleased = () => {
-    this.setState({ mouseButtonPressed: false });
+    mouseButtonPressed = false;
   };
   mouseHover = (node) => {
     //console.log("hoveringgg");
-    if (!this.state.mouseButtonPressed) return;
+    if (!mouseButtonPressed) return;
     if (grid_array[node[0]][node[1]] === 1) {
       //Already Colored
       this.removeWall(node);
     } else if (grid_array[node[0]][node[1]] === 0) {
       this.createWall(node);
-    }
+    } //We intentionally perform operations if grid_arr== 0 or 1 , because grid_arr = 2,3 are start,end flags, we dont want wall on them
   };
   render() {
     return (
       <div>
-        <nav className="navbar">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <a
-                className="navbar-brand"
-                onClick={() => window.location.reload()}
-              >
-                Path Finding Visualizer
-              </a>
-            </div>
-            <ul className="nav navbar-nav">
-              <li className="active">
-                <a onClick={() => this.clearTheBoard()}>Clear-Board!</a>
-              </li>
-              <li className="active">
-                <a onClick={() => this.clearThePath()}>Clear-Path!</a>
-              </li>
-              <li className="dropdown">
-                <a className="dropdown-toggle" data-toggle="dropdown" href="/#">
-                  Mazes! <span className="caret"></span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="/#" onClick={() => this.drawMaze(0)}>
-                      Random Wall Maze
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/#" onClick={() => this.drawMaze(1)}>
-                      Recursive Division
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <button
-                  id="visualizeButton"
-                  type="button"
-                  className="btn"
-                  onClick={() => this.startVisualization()}
-                  refs="button"
-                >
-                  Visualize
-                </button>
-              </li>
-              <li className="dropdown">
-                <a className="dropdown-toggle" data-toggle="dropdown" href="/#">
-                  Algorithms! <span className="caret"></span>
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a href="/#" onClick={() => this.selectAlgorithm(0)}>
-                      BFS
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/#" onClick={() => this.selectAlgorithm(1)}>
-                      DFS
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/#" onClick={() => this.selectAlgorithm(2)}>
-                      Dijkstra's
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/#" onClick={() => this.selectAlgorithm(3)}>
-                      A-Star
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <NavBar
+          onClearBoard={this.clearTheBoard}
+          onClearPath={this.clearThePath}
+          onDrawMaze={this.drawMaze}
+          onStartVisualize={this.startVisualization}
+          onSelectAlgo={this.selectAlgorithm}
+        />
         <div className="graphContainer">
           <table>
             <tbody>
@@ -350,7 +275,7 @@ class Board extends Component {
   componentDidMount() {
     startFlag = [Math.floor(rows_count / 2), Math.floor(columns_count / 2)];
     finishFlag = [rows_count - 1, columns_count - 1];
-    //Component mounted,deploying start & end Flags
+    //Component mounted,deploy start & end Flags
     this.createFlag("startFlag");
     this.createFlag("finishFlag");
   }
@@ -362,3 +287,4 @@ let startFlag;
 let finishFlag;
 let startFlagDragged = true;
 let user_selected_algorithm = -1;
+let mouseButtonPressed = false;
