@@ -124,8 +124,11 @@ class Board extends Component {
       }, 500);
       return; //Stops this method
     }
-    //Now we have to call our Algorithms
-    //Before calling our algo clear the path travelled by any of our algorithm
+    //At this point user selected an algo
+    //1) Make the navbar un-clickable
+    document.getElementById("navbar").style.pointerEvents = "none";
+
+    //2) Before calling our algo clear the path travelled by any of our algorithm
     //Ex: If DFS was visualized first, and then BFS was clicked then the path would mess-up, hence clear the board
     this.clearThePath();
     let { path, shortest_path_to_Target } = Algorithms(
@@ -169,6 +172,11 @@ class Board extends Component {
         timer++ * 15
       );
     }
+    //ENDS
+    //In the method(starVisz) we make the navbar unclickable, so change it back to auto
+    setTimeout(() => {
+      document.getElementById("navbar").style.pointerEvents = "auto";
+    }, timer * 15);
   };
   onDragStart = (ev, element) => {
     //console.log("drag Started for", element);

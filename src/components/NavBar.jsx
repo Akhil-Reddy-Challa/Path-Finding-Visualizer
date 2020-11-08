@@ -6,7 +6,7 @@ class NavBar extends Component {
     const traversalAlgorithms = ["BFS", "DFS", "Dijkstra's", "A-Star"];
     const mazeAlgorithms = ["Random Wall Maze", "Recursive Division"];
     return (
-      <nav className="navbar">
+      <nav className="navbar" id="navbar">
         <div className="container-fluid">
           <div className="navbar-header">
             <a

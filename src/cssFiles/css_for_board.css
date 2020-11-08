@@ -14,6 +14,7 @@
   background-color: #4286f4 !important;
   border-radius: 0px;
   margin-bottom: 0px;
+  pointer-events: auto; /*When an algo is being visualized, setting this to none can make the navbar unresponsive to clicks*/
 }
 /*Below is for Title-TEXT on Nav bar*/
 /*........................Starts.............*/
