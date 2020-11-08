@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import "../cssFiles/bootstrap.min.css";
+import "../cssFiles/css_for_board.css";
 class NavBar extends Component {
   render() {
+    const traversalAlgorithms = ["BFS", "DFS", "Dijkstra's", "A-Star"];
+    const mazeAlgorithms = ["Random Wall Maze", "Recursive Division"];
     return (
       <nav className="navbar">
         <div className="container-fluid">
@@ -29,25 +33,20 @@ class NavBar extends Component {
                 Mazes! <span className="caret"></span>
               </a>
               <ul className="dropdown-menu">
-                <li>
-                  <a href="/#" onClick={() => this.props.onDrawMaze(0)}>
-                    Random Wall Maze
-                  </a>
-                </li>
-                <li>
-                  <a href="/#" onClick={() => this.props.onDrawMaze(1)}>
-                    Recursive Division
-                  </a>
-                </li>
+                {mazeAlgorithms.map((algoName, index) => (
+                  <li key={index}>
+                    <a href="/#" onClick={() => this.props.onDrawMaze(index)}>
+                      {algoName}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </li>
             <li>
               <button
                 id="visualizeButton"
-                type="button"
                 className="btn"
                 onClick={this.props.onStartVisualize}
-                refs="button"
               >
                 Visualize
               </button>
@@ -57,29 +56,29 @@ class NavBar extends Component {
                 Algorithms! <span className="caret"></span>
               </a>
               <ul className="dropdown-menu">
-                <li>
-                  <a href="/#" onClick={() => this.props.onSelectAlgo(0)}>
-                    BFS
-                  </a>
-                </li>
-                <li>
-                  <a href="/#" onClick={() => this.props.onSelectAlgo(1)}>
-                    DFS
-                  </a>
-                </li>
-                <li>
-                  <a href="/#" onClick={() => this.props.onSelectAlgo(2)}>
-                    Dijkstra's
-                  </a>
-                </li>
-                <li>
-                  <a href="/#" onClick={() => this.props.onSelectAlgo(3)}>
-                    A-Star
-                  </a>
-                </li>
+                {traversalAlgorithms.map((algoName, index) => (
+                  <li key={index}>
+                    <a href="/#" onClick={() => this.props.onSelectAlgo(index)}>
+                      {algoName}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </li>
           </ul>
+          <div className="iconsPreviewSection">
+            <i
+              className="displayIcon material-icons"
+              style={{ color: "green" }}
+            >
+              place
+            </i>
+            <span>Start Flag</span>
+            <i className="displayIcon material-icons" style={{ color: "red" }}>
+              place
+            </i>
+            <span>Target Flag</span>
+          </div>
         </div>
       </nav>
     );

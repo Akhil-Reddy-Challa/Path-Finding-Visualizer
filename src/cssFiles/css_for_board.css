@@ -225,3 +225,17 @@ td {
     transform: rotate(360deg);
   }
 }
+.displayIcon {
+  margin-top: 12px;
+  font-size: 25px;
+  cursor: default;
+}
+.iconsPreviewSection {
+  color: white;
+  font-weight: normal !important;
+}
+.wallBoxPreview {
+  width: 10px;
+  height: 10px;
+  background-color: #2c3e50;
+}

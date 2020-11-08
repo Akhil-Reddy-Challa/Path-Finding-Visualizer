@@ -136,9 +136,9 @@ class Board extends Component {
     );
     if (user_selected_algorithm !== 3)
       //Astar algo takes care of drawing the board
-      this.drawGraph(path, shortest_path_to_Target);
+      this.paintTheBoard(path, shortest_path_to_Target);
   };
-  drawGraph = (p, sp) => {
+  paintTheBoard = (p, sp) => {
     // p == path
     // sp == shortest_path_to_target
     var timer = 1;
