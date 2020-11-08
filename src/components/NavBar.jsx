@@ -67,14 +67,14 @@ class NavBar extends Component {
             </li>
           </ul>
           <div className="iconsPreviewSection">
+            <i className="displayIcon material-icons" style={{ color: "red" }}>
+              place
+            </i>
+            <span>Start Flag</span>
             <i
               className="displayIcon material-icons"
               style={{ color: "green" }}
             >
-              place
-            </i>
-            <span>Start Flag</span>
-            <i className="displayIcon material-icons" style={{ color: "red" }}>
               place
             </i>
             <span>Target Flag</span>
