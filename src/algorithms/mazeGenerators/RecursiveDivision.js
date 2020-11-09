@@ -28,12 +28,10 @@ function create_maze(start_x, start_y, cells, w, h) {
   // Shuffle the array all_directions and get a random direction
   shuffle(all_directions);
   // console.log("directions shuffled");
-  // we keep trying the next direction in the list, until we have no directions
-  // left
-  for (var i of all_directions) {
+  // we keep trying the next direction in the list, until we have no directions left
+  for (var new_direction of all_directions) {
     // get the new_coordinates
-    // print("Picked direction:", i)
-    var new_direction = i;
+    // console.log("Picked direction:", new_direction)
 
     // calculate the new node's coordinates using our random direction.
     // we *2 as we are moving two cells in each direction to the next node
@@ -43,7 +41,7 @@ function create_maze(start_x, start_y, cells, w, h) {
     // Check if the test node is a wall (eg it hasn't been visited)
     if (is_wall(node_x, node_y, w, h, cells) === 1) {
       // Success code: we have found a path
-      // # set our linking cell (between the two nodes we're moving from/to) to a path
+      // Set our linking cell (between the two nodes we're moving from/to) to a path
       var link_cell_x = start_x + new_direction[0];
       var link_cell_y = start_y + new_direction[1];
       set_path(link_cell_x, link_cell_y, cells);
@@ -92,7 +90,7 @@ function drawTheNewMaze(new_grid, grid_arr, w, h, sf, ff) {
     }
   }
   //Now all the walls are set
-  //But our startFlag, end Flags might bemarked as walls, so undo that
+  //But our startFlag, end Flags might be marked as walls, so undo that
   document.getElementById(sf).removeAttribute("class");
   grid_arr[sf[0]][sf[1]] = 2;
   document.getElementById(ff).removeAttribute("class");
