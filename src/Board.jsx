@@ -141,13 +141,11 @@ class Board extends Component {
       //Astar algo takes care of drawing the board
       this.paintTheBoard(path, shortest_path_to_Target);
   };
-  paintTheBoard = (p, sp) => {
-    // p == path
-    // sp == shortest_path_to_target
+  paintTheBoard = (path, shortestPath) => {
     var timer = 1;
     //This will draw the path/depth covered by our Algo
-    for (let cnt = 0; cnt < p.length; cnt++) {
-      let node = p[cnt];
+    for (let cnt = 0; cnt < path.length; cnt++) {
+      let node = path[cnt];
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
       if (!this.areEqual(finishFlag, node))
@@ -160,8 +158,8 @@ class Board extends Component {
         );
     }
     //This will draw the shortest_path if it exists.
-    for (let k = 0; k < sp.length; k++) {
-      let node = sp[k];
+    for (let k = 0; k < shortestPath.length; k++) {
+      let node = shortestPath[k];
       let i = Math.floor((node - 1) / columns_count);
       let j = node - (i * columns_count + 1);
       setTimeout(

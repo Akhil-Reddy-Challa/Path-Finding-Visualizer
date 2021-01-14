@@ -35,4 +35,8 @@ function drawGraph(path, shortestPath) {
       );
     }
   }
+  //In the method(starVisz) we make the navbar unclickable, so change it back to auto
+  setTimeout(() => {
+    document.getElementById("navbar").style.pointerEvents = "auto";
+  }, timer * 15);
 }
