@@ -44,7 +44,6 @@ class Board extends Component {
   };
   createFlag = (flagType) => {
     //flagType = Tells us the type of Flag to create
-    //position = coordinates
 
     var div = document.createElement("div"); //Creates a new DIV html element
     div.className = "material-icons " + flagType;
@@ -182,7 +181,7 @@ class Board extends Component {
   };
   onDragOver = (ev) => {
     //console.log("dragging over");
-    ev.preventDefault();
+    ev.preventDefault(); //If not prevented, it will mess the flag creation process
   };
   onDrop = (ev, droppingPlace) => {
     //Check if the dropping place is start or finish node place
@@ -208,17 +207,18 @@ class Board extends Component {
     //console.log("new_s,new_f", startFlag, finishFlag);
     startFlagDragged = true;
   };
-  mouseButtonClicked = (node) => {
-    if (this.areEqual(startFlag, node) || this.areEqual(finishFlag, node))
+  mouseButtonClicked = (coordinates) => {
+    if (
+      this.areEqual(startFlag, coordinates) ||
+      this.areEqual(finishFlag, coordinates)
+    )
       return; //User should not deploy wall on the flags
-    let p_x = node[0]; //position_x
-    let p_y = node[1]; //position_y
-    //console.log("im clicked", node);
+
     mouseButtonPressed = true;
-    if (grid_array[p_x][p_y] === 1) {
+    if (grid_array[coordinates[0]][coordinates[1]] === 1) {
       //Already Colored
-      this.removeWall(node);
-    } else this.createWall(node);
+      this.removeWall(coordinates);
+    } else this.createWall(coordinates);
   };
   mouseBtnReleased = () => {
     mouseButtonPressed = false;

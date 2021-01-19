@@ -1,3 +1,6 @@
+/*
+This is used to calculate the board size, like number of rows and columns
+*/
 export function createBoard() {
   return calculateDimensionsForBoard();
 }
@@ -14,6 +17,3 @@ function calculateDimensionsForBoard() {
     grid_array.push(new Array(columns_count).fill(0));
   return { grid_array, rows_count, columns_count };
 }
-/*
-This is used to calculate the board size, like number of rows and columns
-*/
